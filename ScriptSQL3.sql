@@ -1,4 +1,3 @@
--- alteration des table
 
 alter table EST_ATTACHE
    add constraint FK_EST_ATTA_EST_ATTAC_EXPERIEN foreign key (IDEXPERIENCE)
