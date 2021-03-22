@@ -26,6 +26,7 @@ create index EST_ATTACHE2_FK on EST_ATTACHE (
 /* Table : EXPERIENCE                                           */
 /*==============================================================*/
 create table EXPERIENCE (
+   IDEXPERIENCE         NUMBER                not null,
    A1                   NUMBER                not null
       constraint CKC_A1_EXPERIEN check (A1 >= 0),
    A2                   NUMBER                not null
@@ -54,7 +55,6 @@ create table EXPERIENCE (
       constraint CKC_NBMAXREPROGRAMMAT_EXPERIEN check (NBMAXREPROGRAMMATION >= 0),
    COEFFSURCOUT         NUMBER                not null
       constraint CKC_COEFFSURCOUT_EXPERIEN check (COEFFSURCOUT >= 0),
-   IDEXPERIENCE         NUMBER                not null,
    EXP_IDEXPERIENCE     NUMBER,
    IDRELEVE             NUMBER                not null,
    IDRESULTAT           NUMBER                not null,
