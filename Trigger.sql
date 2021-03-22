@@ -1,5 +1,5 @@
 /* Trigger 9 */
-drop trigger VerificationDateExp;
+drop trigger T_VerificationDateExp;
 create trigger VerificationDateExp before insert on EXPERIENCE for each row
 begin
     if :new.DEBUTEXP > :new.FINEXP then
@@ -9,7 +9,7 @@ end;
 /
 
 /* Trigger 12 */
-drop trigger VerificationDateDemande;
+drop trigger T_VerificationDateDemande;
 create trigger VerificationDateDemande before insert on EXPERIENCE for each row
 begin
     if :new.DEBUTEXP < :new.DATECHERCHEUR then
