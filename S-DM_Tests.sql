@@ -7,36 +7,48 @@ CHECK_CONSTRAINT_VIOLATED EXCEPTION;
 begin
 commit; -- definition du point de démarrage de début de test
 
-insert into RESULTAT values (1,
-                             1,
-                             TO_DATE( 'October 10, 2020', 'MONTH DD, YYYY' ));
-insert into REACTIF values (1,
-                            55,
-                            'reactif');
-insert into TYPERELEVE values (1,
-                               (select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),
-                               'releve');
-insert into EXPERIENCE values (1,
-                               1,
-                               2,
-                               3,
-                               5,
-                               1,
-                               TO_DATE( 'September 10, 2020', 'MONTH DD, YYYY' ),
-                               TO_DATE( 'October 10, 2020', 'MONTH DD, YYYY' ),
-                               null,
-                               2,
-                               TO_DATE( 'September 09, 2020', 'MONTH DD, YYYY' ),
-                               2,
-                               4,
-                               'technicien',
-                               'chercheur',
-                               3,
-                               6,
-                               2,
-                               null,
-                               (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='releve'),
-                               (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')); -- insertion priorite invalide (prio > 3)
+insert into RESULTAT values 
+  (
+    1,
+    1,
+    TO_DATE( 'October 10, 2020', 'MONTH DD, YYYY' )
+  );
+insert into REACTIF values 
+  (
+    1,
+    55,
+    'reactif'
+  );
+insert into TYPERELEVE values 
+  (
+    1,
+    (select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),
+    'releve'
+  );
+insert into EXPERIENCE values 
+  (
+    1,
+    1,
+    2,
+    3,
+    5,
+    1,
+    TO_DATE( 'September 10, 2020', 'MONTH DD, YYYY' ),
+    TO_DATE( 'October 10, 2020', 'MONTH DD, YYYY' ),
+    null,
+    2,
+    TO_DATE( 'September 09, 2020', 'MONTH DD, YYYY' ),
+    2,
+    4,
+    'technicien',
+    'chercheur',
+    3,
+    6,
+    2,
+    null,
+    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='releve'),
+    (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
+  ); -- insertion priorite invalide (prio > 3)
 
 rollback; -- suppression de toutes les données de contexte du test
 insert into resultat_test values ('TestIndicePriorite1', 0); -- si rien ne se passe, le test échoue
