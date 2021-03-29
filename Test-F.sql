@@ -122,8 +122,9 @@ begin
     insert into EXPERIENCE values
         (
             1,
+            1,
             2,
-            1,  
+            1,
             5,
             1,
             TO_DATE( 'September 10, 2020', 'MONTH DD, YYYY' ),
@@ -132,11 +133,11 @@ begin
             4,
             TO_DATE( 'September 09, 2020', 'MONTH DD, YYYY' ),
             2,
-            4,
+            3,
             'technicien',
             'chercheur',
             3,
-            1,
+            6,
             2,
             null,
             (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='colorimetrique'),
@@ -187,32 +188,30 @@ begin
             1,
             'colorimetrique'
         );
-=
     -- Remplissage de la table d'interet c'est à dire experience :
     insert into EXPERIENCE values
-        insert into EXPERIENCE values
-            (
-                1,
-                1,
-                2,
-                1,
-                5,
-                1,
-                TO_DATE( 'September 10, 2020', 'MONTH DD, YYYY' ),
-                TO_DATE( 'October 10, 2020', 'MONTH DD, YYYY' ),
-                2,
-                3,
-                TO_DATE( 'September 09, 2020', 'MONTH DD, YYYY' ),
-                2,
-                3,
-                'technicien',
-                'chercheur',
-                3,
-                6,
-                2,
-                null,
-                (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='colorimetrique'),
-                (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
+        (
+            1,
+            1,
+            2,
+            1,
+            5,
+            1,
+            TO_DATE( 'September 10, 2020', 'MONTH DD, YYYY' ),
+            TO_DATE( 'October 10, 2020', 'MONTH DD, YYYY' ),
+            2,
+            3,
+            TO_DATE( 'September 09, 2020', 'MONTH DD, YYYY' ),
+            2,
+            3,
+            'technicien',
+            'chercheur',
+            3,
+            6,
+            2,
+            null,
+            (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='colorimetrique'),
+            (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
             );
     rollback;
     insert into TraceTest values ('TestN_VerificationDivisionEntiere',0);
