@@ -1,6 +1,6 @@
 /* Trigger */
-drop trigger ;
-create trigger  before insert on EXPERIENCE for each row
+drop trigger PlacementGroupe;
+create trigger PlacementGroupe after insert on EXPERIENCE for each row
 begin
     
 end;
