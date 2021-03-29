@@ -1,3 +1,4 @@
+/* Automatisation pour l'indice de priorité*/
 drop trigger AutoIndicePriorité;
 create trigger AutoIndicePriorité before insert on EXPERIENCE for each row
 begin
@@ -6,7 +7,6 @@ begin
         select
 end;
 /
-
 
 
 

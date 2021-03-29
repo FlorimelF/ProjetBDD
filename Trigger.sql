@@ -32,3 +32,19 @@ end;
 /
 
 commit;
+
+
+/* Empêche les doublons de nom de réactif */
+drop trigger T_IntégrationReactif;
+create trigger T_IntégrationReactif before insert on REACTIF for each row
+declare
+nbReac integer:=0;
+begin
+set new.NomReactif = new.NomReactif;
+select count (*) into nbReac from REACTIF where NomReactif=:new.NomReactif;
+if nbReac > 0 then
+        raise_application_error(-2001, 'Ce nom de réactif existe déjà');
+end if;
+end;
+/
+commit;
