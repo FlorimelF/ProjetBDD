@@ -35,3 +35,56 @@ begin
 end;
 /
 
+
+/*Un niveau de priorité supérieur à 1 a un impact sur le coût de l'expérience :
+le prix total d'une expérience e est multiplié par le coefficient (n + d)/n,
+où n est le nombre total d'expériences non réalisées et arrivées avant e (e comprise), et d est le nombre d'expériences
+doublées par e dans la file d'attente, du fait de sa priorité. */
+
+ /* VERSION 1 PRIORITAIRE*/
+drop trigger AutoCalculCoeffSurcout;
+create trigger AutoCalculCoeffSurcout before UPDATE or INSERT on EXPERIENCE for each row
+declare
+nbN number;
+nbE number;
+begin
+for i in (SELECT * FROM EXPERIENCE WHERE IndicePriorite > 1) loop
+    SELECT COUNT(*) +1 into nbN
+        FROM EXPERIENCE
+        WHERE (
+            SELECT dateChercheur
+            FROM EXPERIENCE
+            JOIN RESULTAT USING (idResultat)
+            WHERE indicePriorite>1 and AccepteResultat=0) < i.dateChercheur;
+    SELECT COUNT(*) into nbE
+        FROM EXPERIENCE
+        WHERE (SELECT IndicePriorite FROM EXPERIENCE) < i.IndicePriorite;
+    UPDATE EXPERIENCE SET coeffSurcout = (nbN+nbE)/nbN
+        WHERE IdExperience=i.IdExperience;
+end loop;
+end;
+/
+
+/* VERSION 2 SI 1 FONCTIONNE PAS*/
+drop trigger AutoCalculCoeffSurcout;
+create or replace trigger AutoCalculCoeffSurcout before UPDATE or INSERT on EXPERIENCE for each row
+declare
+    nbN NUMBER;
+    nbE NUMBER;
+begin
+    if :new.IndicePriorite>1 then
+        SELECT COUNT(*) +1 into nbN
+        FROM EXPERIENCE
+        WHERE (
+                  SELECT dateChercheur
+                  FROM EXPERIENCE
+                           JOIN RESULTAT USING (idResultat)
+                  WHERE indicePriorite>1 and AccepteResultat=0) < :new.dateChercheur;
+        SELECT COUNT(*) into nbE
+        FROM EXPERIENCE
+        WHERE (SELECT IndicePriorite FROM EXPERIENCE) < :new.IndicePriorite;
+        UPDATE EXPERIENCE SET coeffSurcout = (nbN+nbE)/nbN
+        WHERE IdExperience=:new.IdExperience;
+    end if;
+end;
+/
