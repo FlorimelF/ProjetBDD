@@ -1,3 +1,7 @@
+-- Enola-ROUDAUT
+-- Florimel-FLOTTE
+-- Salomé-REBOURS
+
 /* Trigger 9 */
 drop trigger T_VerificationDateExp;
 create trigger T_VerificationDateExp before insert on EXPERIENCE for each row
