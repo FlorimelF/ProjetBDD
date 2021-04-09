@@ -1238,3 +1238,145 @@ end;
 
 select * from TraceTest;
 commit;
+
+
+
+
+
+
+
+/*==============================================================*/
+/* Test pour le trigger T_VerificationDateDemande               */
+/*==============================================================*/
+
+drop table TraceTest;
+create table TraceTest (
+    nomTest varchar2(100),
+    resultat number
+);
+
+/*Test positif*/
+create or replace procedure testP_VerificationDateDemande as
+  check_constraint_violated exception;
+  pragma exception_init(check_constraint_violated, -2290);
+begin
+  commit;
+  insert into RESULTAT values (
+    1,
+    1,
+    TO_DATE( 'October 10, 2020', 'MONTH DD, YYYY' )
+  );
+  insert into REACTIF values (
+    1,
+    55,
+    'reactif'
+  );
+  insert into TYPERELEVE values (
+    1,
+    (select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),
+    'releve'
+  );
+  insert into EXPERIENCE values (
+    1,
+    1,
+    2,
+    1,
+    5,
+    1,
+    TO_DATE( 'September 10, 2020', 'MONTH DD, YYYY' ),
+    TO_DATE( 'October 10, 2020', 'MONTH DD, YYYY' ),
+    2,
+    4,
+    TO_DATE( 'September 09, 2020', 'MONTH DD, YYYY' ),
+    2,
+    3,
+    'technicien',
+    'chercheur',
+    3,
+    6,
+    2,
+    null,
+    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='releve'),
+    (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
+  );
+  rollback;
+  insert into TraceTest values ('testP_VerificationDateDemande',1);
+  commit;
+  exception
+    when check_constraint_violated then
+      rollback;
+      insert into TraceTest values ('testP_VerificationDateDemande',0);
+      commit; 
+end;
+/
+begin
+  testP_VerificationDateDemande;
+end;
+/
+commit;
+
+/*Test negatif*/
+create or replace procedure testN_VerificationDateDemande as
+  check_constraint_violated exception;
+  pragma exception_init(check_constraint_violated, -2290);
+begin
+  commit;
+  insert into RESULTAT values (
+    1,
+    1,
+    TO_DATE( 'October 10, 2020', 'MONTH DD, YYYY' )
+  );
+  insert into REACTIF values (
+    1,
+    55,
+    'reactif'
+  );
+  insert into TYPERELEVE values (
+    1,
+    (select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),
+    'releve'
+  );
+  insert into EXPERIENCE values (
+    1,
+    1,
+    2,
+    1,
+    5,
+    1,
+    TO_DATE( 'September 10, 2020', 'MONTH DD, YYYY' ),
+    TO_DATE( 'October 10, 2020', 'MONTH DD, YYYY' ),
+    2,
+    4,
+    TO_DATE( 'September 12, 2020', 'MONTH DD, YYYY' ),
+    2,
+    3,
+    'technicien',
+    'chercheur',
+    3,
+    6,
+    2,
+    null,
+    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='releve'),
+    (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
+  );
+  rollback;
+  insert into TraceTest values ('testN_VerificationDateDemande',0);
+  commit;
+  exception
+    when check_constraint_violated then
+      rollback;
+      insert into TraceTest values ('testN_VerificationDateDemande',1);
+      commit; 
+end;
+/
+begin
+  testN_VerificationDateDemande;
+end;
+/
+select * from TraceTest;
+commit;
+
+
+
+
+

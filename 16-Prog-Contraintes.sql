@@ -11,6 +11,7 @@ begin
     end if;
 end;
 /
+commit;
 
 /* Trigger 12 */
 drop trigger T_VerificationDateDemande;
