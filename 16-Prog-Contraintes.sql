@@ -2,15 +2,27 @@
 -- Florimel-FLOTTE
 -- Salomé-REBOURS
 
------------------------------------------------------------------------------------------- SOMMAIRE
+-------------------------------------------------------------------------------------------------------------- SOMMAIRE
+
+------------------------------------------------------------------------ Contraintes
 
 -- 1.   T_VerificationDateExp
 -- 2.   T_VerificationDateDemande
 -- 3.   T_VerificationNiveauAcceptation
 -- 4.   T_IntégrationReactif
 -- 5.   T_VérificationNomRelevé
+-- 6.   T_TestVerificationDivisionEntiere
 
------------------------------------------------------------------------------ T_VerificationDateExp
+-------------------------------------------------------------------- Automatisations
+
+-- 1.   AutoPlacementGroupe
+-- 2.   AutoCalculCoeffSurcout
+
+----------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------- CONTRAINTES ----------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------------------------- T_VerificationDateExp
 -- DébutExp <= FinExp
 
 create or replace trigger T_VerificationDateExp before insert on EXPERIENCE for each row
@@ -22,7 +34,7 @@ end;
 /
 commit;
 
-------------------------------------------------------------------------- T_VerificationDateDemande
+--------------------------------------------------------------------------------------------- T_VerificationDateDemande
 -- DateChercheur (Date de demande de l'expérience) <= DébutExp
   
 create or replace trigger T_VerificationDateDemande before insert on EXPERIENCE for each row
@@ -34,7 +46,7 @@ end;
 /
 commit;
 
-------------------------------------------------------------------- T_VerificationNiveauAcceptation
+--------------------------------------------------------------------------------------- T_VerificationNiveauAcceptation
 -- Les niveaux d'acceptation a1 et a2 sont tels que a1 <= a2
 
 create or replace trigger T_VerificationNiveauAcceptation before insert on EXPERIENCE for each row
@@ -46,7 +58,7 @@ end;
 /
 commit;
 
------------------------------------------------------------------------------- T_IntégrationReactif
+-------------------------------------------------------------------------------------------------- T_IntégrationReactif
 -- Eviter les redondances de réactifs : 
 -- Si le nom du réactif est déjà dans la BDD, il n'est pas à nouveau inséré
 -- (ne pas tenir compte de la casse, ni des accents)
@@ -63,7 +75,7 @@ end;
 /
 commit;
 
---------------------------------------------------------------------------- T_VérificationNomRelevé
+----------------------------------------------------------------------------------------------- T_VérificationNomRelevé
 -- Nom_Relevé doit contenir "Colorimétrique" ou "Opacimétrique" exclusivement
 
 create or replace trigger T_VérificationNomRelevé before insert on TYPERELEVE for each row
@@ -77,3 +89,111 @@ begin
 end;
 /
 commit;
+
+------------------------------------------------------------------------------------- T_TestVerificationDivisionEntiere
+-- Durée et fObservation sont tels que d/f donne un résultat entier
+
+create or replace trigger T_TestVerificationDivisionEntiere before insert on EXPERRIENCE for each row
+declare
+  
+begin
+  
+end;
+/
+commit;
+
+----------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------- AUTOMATISATIONS --------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------------------------- AutoPlacementGroupe
+-- Placement des n replicas d'un groupe sur des plaques
+-- Un groupe doit être sur la même plaque
+-- Tous les groupes d'une même plaque sont sous les mêmes conditions 
+-- (opacimétrique/colorimétrique, suivis dans le temps/non suivis dans le temps)
+
+create or replace trigger PlacementGroupe before insert on GROUPE for each row
+declare
+  nb NUMBER;
+  NbSlotOcc NUMBER;
+begin
+  SELECT NBSLOTPOURGROUPE 
+    INTO nb 
+    FROM GROUPE 
+    NATURAL JOIN EXPERIENCE
+    WHERE IDEXPERIENCE = :new.IDEXPERIENCE;
+  for i in (SELECT IDPLAQUE, IDTYPEPLAQUE FROM PLAQUE NATURAL JOIN LOTPLAQUE) loop
+    SELECT SUM(NBSLOTPOURGROUPE) 
+      INTO NbSlotOcc 
+      FROM EXPERIENCE 
+      NATURAL JOIN GROUPE 
+      WHERE IDPLAQUE = i.IDPLAQUE;
+    if i.IDTYPEPLAQUE = 0 then
+      if NbSlotOcc <= 96 - nb then
+        :new.IDPLAQUE := i.IDPLAQUE;
+        EXIT;
+      end if;
+    else
+      if NbSlotOcc <= 384 - nb then
+        :new.IDPLAQUE := i.IDPLAQUE;
+        EXIT;
+      end if;
+    end if;
+  end loop;
+end;
+/
+
+------------------------------------------------------------------------------------------------- AutoCalculCoeffSurcout
+-- Un niveau de priorité supérieur à 1 a un impact sur le coût de l'expérience
+-- Le prix total d'une expérience e est multiplié par le coefficient (n + d)/n
+-- n le nombre total d'expériences non réalisées et arrivées avant e (e comprise)
+-- d le nombre d'expériences doublées par e dans la file d'attente, du fait de sa priorité
+
+-- VERSION 1 PRIORITAIRE 
+
+create or replace trigger AutoCalculCoeffSurcout before UPDATE or INSERT on EXPERIENCE for each row
+declare
+  nbN number;
+  nbE number;
+begin
+  for i in (SELECT * FROM EXPERIENCE WHERE IndicePriorite > 1) loop
+    SELECT COUNT(*) +1 into nbN
+      FROM EXPERIENCE
+      WHERE (
+        SELECT dateChercheur
+        FROM EXPERIENCE
+        JOIN RESULTAT USING (idResultat)
+        WHERE indicePriorite>1 and AccepteResultat=0) < i.dateChercheur;
+    SELECT COUNT(*) into nbE
+      FROM EXPERIENCE
+      WHERE (SELECT IndicePriorite FROM EXPERIENCE) < i.IndicePriorite;
+    UPDATE EXPERIENCE SET coeffSurcout = (nbN+nbE)/nbN
+      WHERE IdExperience=i.IdExperience;
+  end loop;
+end;
+/
+
+-- VERSION 2 (SI 1 FONCTIONNE PAS)
+
+drop trigger AutoCalculCoeffSurcout;
+create or replace trigger AutoCalculCoeffSurcout before UPDATE or INSERT on EXPERIENCE for each row
+declare
+  nbN NUMBER;
+  nbE NUMBER;
+begin
+  if :new.IndicePriorite>1 then
+    SELECT COUNT(*) +1 into nbN
+    FROM EXPERIENCE
+    WHERE (
+      SELECT dateChercheur
+      FROM EXPERIENCE
+      JOIN RESULTAT USING (idResultat)
+      WHERE indicePriorite>1 and AccepteResultat=0) < :new.dateChercheur;
+    SELECT COUNT(*) into nbE
+    FROM EXPERIENCE
+    WHERE (SELECT IndicePriorite FROM EXPERIENCE) < :new.IndicePriorite;
+    UPDATE EXPERIENCE SET coeffSurcout = (nbN+nbE)/nbN
+    WHERE IdExperience=:new.IdExperience;
+  end if;
+end;
+/

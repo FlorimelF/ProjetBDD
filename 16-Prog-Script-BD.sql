@@ -492,3 +492,136 @@ alter table TABLERESULTAT
 alter table TYPERELEVE
    add constraint FK_TYPERELE_UTILISE_REACTIF foreign key (IDREACTIF)
       references REACTIF (IDREACTIF);
+
+
+
+----------------------------------------------------------------------------------------- Automatisation clés primaires
+
+-- 1.   TypePlaque
+drop sequence S_IdTypePlaque;
+create sequence S_IdTypePlaque start with 1 increment by 1;
+create or replace trigger T_IdTypePlaque before insert on TypePlaque for each row
+begin
+  select S_IdTypePlaque.nextval into :new.IdTypePlaque from dual;
+end;
+/
+
+-- 2.   LotPlaque
+drop sequence S_IdLotPlaque;
+create sequence S_IdLotPlaque start with 1 increment by 1;
+create or replace trigger T_IdLotPlaque before insert on LotPlaque for each row
+begin
+  select S_IdLotPlaque.nextval into :new.IdLotPlaque from dual;
+end;
+/
+
+-- 3.   Plaque
+drop sequence S_IdPlaque;
+create sequence S_IdPlaque start with 1 increment by 1;
+create or replace trigger T_IdPlaque before insert on Plaque for each row
+begin
+  select S_IdPlaque.nextval into :new.IdPlaque from dual;
+end;
+/
+
+-- 4.   Photometre
+drop sequence S_IdPhotometre;
+create sequence S_IdPhotometre start with 1 increment by 1;
+create or replace trigger T_IdPhotometre before insert on Photometre for each row
+begin
+  select S_IdPhotometre.nextval into :new.IdPhotometre from dual;
+end;
+/
+
+-- 5.   Photo
+drop sequence S_IdPhoto;
+create sequence S_IdPhoto start with 1 increment by 1;
+create or replace trigger T_IdPhoto before insert on Photo for each row
+begin
+  select S_IdPhoto.nextval into :new.IdPhoto from dual;
+end;
+/
+
+-- 6.   Reactif
+drop sequence S_IdReactif;
+create sequence S_IdReactif start with 1 increment by 1;
+create or replace trigger T_IdReactif before insert on Reactif for each row
+begin
+  select S_IdReactif.nextval into :new.IdReactif from dual;
+end;
+/
+
+-- 7.   TypeReleve
+drop sequence S_IdTypeReleve;
+create sequence S_IdTypeReleve start with 1 increment by 1;
+create or replace trigger T_IdTypeReleve before insert on TypeReleve for each row
+begin
+  select S_IdTypeReleve.nextval into :new.IdReleve from dual;
+end;
+/
+
+-- 8.   Resultat
+drop sequence S_IdResultat;
+create sequence S_IdResultat start with 1 increment by 1;
+create or replace trigger T_IdResultat before insert on Resultat for each row
+begin
+  select S_IdResultat.nextval into :new.IdResultat from dual;
+end;
+/
+
+-- 9.   Experience
+drop sequence S_IdExperience;
+create sequence S_IdExperience start with 1 increment by 1;
+create or replace trigger T_IdExperience before insert on Experience for each row
+begin
+  select S_IdExperience.nextval into :new.IdExperience from dual;
+end;
+/
+
+-- 10.  Facture
+drop sequence S_IdFacture;
+create sequence S_IdFacture start with 1 increment by 1;
+create or replace trigger T_IdFacture before insert on Facture for each row
+begin
+  select S_IdFacture.nextval into :new.IdFacture from dual;
+end;
+/
+
+-- 11.  Solution
+drop sequence S_IdSolution;
+create sequence S_IdSolution start with 1 increment by 1;
+create or replace trigger T_IdSolution before insert on Solution for each row
+begin
+  select S_IdSolution.nextval into :new.IdSolution from dual;
+end;
+/
+
+-- 12.  Groupe
+drop sequence S_IdGroupe;
+create sequence S_IdGroupe start with 1 increment by 1;
+create or replace trigger T_IdGroupe before insert on Groupe for each row
+begin
+  select S_IdGroupe.nextval into :new.IdGroupe from dual;
+end;
+/
+
+-- 13.  Slot
+drop sequence S_IdSlot;
+create sequence S_IdSlot start with 1 increment by 1;
+create or replace trigger T_IdSlot before insert on Slot for each row
+begin
+  select S_IdSlot.nextval into :new.IdSlot from dual;
+end;
+/
+
+-- 14.  TableResultat
+drop sequence S_IdTableResultat;
+create sequence S_IdTableResultat start with 1 increment by 1;
+create or replace trigger T_IdTableResultat before insert on TableResultat for each row
+begin
+  select S_IdTableResultat.nextval into :new.IdTableResultat from dual;
+end;
+/
+
+
+

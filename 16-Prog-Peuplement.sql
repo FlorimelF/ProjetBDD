@@ -2,7 +2,9 @@
 -- Florimel-FLOTTE
 -- Salomé-REBOURS
 
----------------------------------------------------------------- ORDRE DES PROCEDURES DE PEUPLEMENT
+-- 
+
+------------------------------------------------------------------------------------ ORDRE DES PROCEDURES DE PEUPLEMENT
 
 -- 1.   TypePlaque          Table de Dimension      Ok
 -- 2.   LotPlaque           Table de relation
@@ -20,11 +22,11 @@
 -- 14.  Slot                Table de relation
 -- 15.  TableResultat       Table de relation
 
----------------------------------------------------------------------------------------------------
--------------------------------- CREATION DE TABLES D'ECHANTILLONS --------------------------------
----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+------------------------------------------ CREATION DE TABLES D'ECHANTILLONS -----------------------------------------
+----------------------------------------------------------------------------------------------------------------------
 
--------------------------------------------------------------------------------------- ECH_VENDEURS
+--------------------------------------------------------------------------------------------------------- ECH_VENDEURS
 
 -- Déclaration table ECH_VENDEURS
 drop table Ech_Vendeurs;
@@ -62,7 +64,7 @@ end;
 call P_Vendeur(20);
 commit;
 
------------------------------------------------------------------------------------ ECH_MAGASINIERS
+------------------------------------------------------------------------------------------------------ ECH_MAGASINIERS
 
 -- Déclaration table ECH_MAGASINIERS
 drop table Ech_Magasiniers;
@@ -100,7 +102,7 @@ end;
 call P_Magasinier(20);
 commit;
 
------------------------------------------------------------------------------------ ECH_FABRIQUANTS
+------------------------------------------------------------------------------------------------------ ECH_FABRIQUANTS
 
 -- Déclaration table ECH_FABRIQUANTS
 drop table Ech_Fabriquants;
@@ -138,7 +140,7 @@ end;
 call P_Fabriquant(20);
 commit;
 
----------------------------------------------------------------------------------- ECH_NOM_REACTIFS
+----------------------------------------------------------------------------------------------------- ECH_NOM_REACTIFS
 
 -- Déclaration table ECH_REACTIF
 drop table Ech_Nom_Reactifs;
@@ -176,34 +178,24 @@ end;
 call P_Nom_Reactif(20);
 commit;
 
----------------------------------------------------------------------------------------------------
--------------------------------------- PEUPLEMENT DES TABLES --------------------------------------
----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+------------------------------------------------ PEUPLEMENT DES TABLES -----------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
 
----------------------------------------------------------------------------------------- TYPEPLAQUE
+----------------------------------------------------------------------------------------------------------- TYPEPLAQUE
 
 -- IdPLaque = 1 -> Plaques 96 = 8*12 slots
-insert into TypePlaque values(1,round(DBMS_RANDOM.value(10000,30000)));
+insert into TypePlaque values(null,round(DBMS_RANDOM.value(10000,30000)));
 -- IdPLaque = 2 -> Plaques 384 = 16*24 slots
-insert into TypePlaque values(2,round(DBMS_RANDOM.value(10000,30000)));
+insert into TypePlaque values(null,round(DBMS_RANDOM.value(10000,30000)));
 commit;
 
------------------------------------------------------------------------------------------ LOTPLAQUE
+------------------------------------------------------------------------------------------------------------ LOTPLAQUE
 
--------------------------------------------------------------------------------------------- PLAQUE
+--------------------------------------------------------------------------------------------------------------- PLAQUE
 
----------------------------------------------------------------------------------------- PHOTOMETRE
+----------------------------------------------------------------------------------------------------------- PHOTOMETRE
 
--- Trigger Id table PHOTOMETRE
-drop sequence S_IdPhotometre;
-create sequence S_IdPhotometre start with 1 increment by 1;
-create or replace trigger T_IdPhotometre before insert on Photometre for each row
-begin
-  select S_IdPhotometre.nextval into :new.IdPhotometre from dual;
-end;
-/
-
--- Peuplement de la table PHOTOMETRE
 create or replace procedure P_Photometre(n in number) deterministic as
   Dispo smallint;
   Cout number;
@@ -225,20 +217,10 @@ end;
 call P_Photometre(20);
 commit;
 
---------------------------------------------------------------------------------------------- PHOTO
+---------------------------------------------------------------------------------------------------------------- PHOTO
 
-------------------------------------------------------------------------------------------- REACTIF
+-------------------------------------------------------------------------------------------------------------- REACTIF
 
--- Trigger Id table REACTIF
-drop sequence S_IdReactif;
-create sequence S_IdReactif start with 1 increment by 1;
-create or replace trigger T_IdReactif before insert on Reactif for each row
-begin
-  select S_IdReactif.nextval into :new.IdReactif from dual;
-end;
-/
-
--- Peuplement de la table REACTIF
 create or replace procedure P_Reactif(n in number) deterministic as
   Nombre number;
   Prix number;
@@ -264,18 +246,8 @@ end;
 call P_Reactif(20);
 commit;
 
----------------------------------------------------------------------------------------- TYPERELEVE
+----------------------------------------------------------------------------------------------------------- TYPERELEVE
 
--- Trigger Id table TYPERELEVE
-drop sequence S_IdTypeReleve;
-create sequence S_IdTypeReleve start with 1 increment by 1;
-create or replace trigger T_IdTypeReleve before insert on TypeReleve for each row
-begin
-  select S_IdTypeReleve.nextval into :new.IdReleve from dual;
-end;
-/
-
--- Peuplement de la table TYPERELEVE
 create or replace procedure P_TypeReleve deterministic as
   Nombre number;
   NbReactifs number;
@@ -309,22 +281,12 @@ end;
 call P_TypeReleve; -- On insère autant de lignes qu'on a de réactifs
 commit;
 
------------------------------------------------------------------------------------------- RESULTAT
+------------------------------------------------------------------------------------------------------------- RESULTAT
 
----------------------------------------------------------------------------------------- EXPERIENCE
+----------------------------------------------------------------------------------------------------------- EXPERIENCE
 
-------------------------------------------------------------------------------------------- FACTURE
+-------------------------------------------------------------------------------------------------------------- FACTURE
 
--- Trigger Id table FACTURE
-drop sequence S_IdFacture;
-create sequence S_IdFacture start with 1 increment by 1;
-create or replace trigger T_IdFacture before insert on Facture for each row
-begin
-  select S_IdFacture.nextval into :new.IdFacture from dual;
-end;
-/
-
--- Peuplement de la table FACTURE
 create or replace procedure P_Facture(n in number) deterministic as
   DateFacture date;
   val number;
@@ -343,13 +305,13 @@ end;
 call P_Facture(20);
 commit;
 
---------------------------------------------------------------------------------------- EST_ATTACHE
+---------------------------------------------------------------------------------------------------------- EST_ATTACHE
 
------------------------------------------------------------------------------------------- SOLUTION
+------------------------------------------------------------------------------------------------------------- SOLUTION
 
--------------------------------------------------------------------------------------------- GROUPE
+--------------------------------------------------------------------------------------------------------------- GROUPE
 
----------------------------------------------------------------------------------------------- SLOT
+----------------------------------------------------------------------------------------------------------------- SLOT
 
-------------------------------------------------------------------------------------- TABLERESULTAT
+-------------------------------------------------------------------------------------------------------- TABLERESULTAT
 
