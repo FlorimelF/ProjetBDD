@@ -7,7 +7,7 @@ create table resultat_test (nomTest varchar2(100), resultat number(1) check(resu
  */
 create or replace procedure Test_T_VerificationDateExpPositif as
 CHECK_CONSTRAINT_VIOLATED EXCEPTION;
-pragma exception_init(check_constraint_violated, -2290) ; --permet de capturer les exceptions levées par un "check"
+pragma exception_init(check_constraint_violated, -20001) ; --permet de capturer les exceptions levées par un "check"
 
 begin
 commit; -- definition du point de démarrage de début de test
@@ -78,7 +78,7 @@ end;
  */
 create or replace procedure Test_T_VerificationDateExpNegatif as
 CHECK_CONSTRAINT_VIOLATED EXCEPTION;
-pragma exception_init(check_constraint_violated, -2290) ; --permet de capturer les exceptions levées par un "check"
+pragma exception_init(check_constraint_violated, -20001) ; --permet de capturer les exceptions levées par un "check"
 
 begin
 commit; -- definition du point de démarrage de début de test
