@@ -34,242 +34,102 @@ create table TraceTest (
 --------------------------------- TESTS CONTRAINTES STRUCTURELLES ---------------------------------
 ---------------------------------------------------------------------------------------------------
 
+-------------------------------------------------------------------------------- TestIndicePriorité
+-- La valeur doit valoir 1, 2 ou 3 
 
+---------------------------------------- Indice Priorité Invalide > 3
 
-
-
-
----------------------------------------------------------------------------------------------------
-------------------------------- TESTS CONTRAINTES NON STRUCTURELLES -------------------------------
----------------------------------------------------------------------------------------------------
-
-
-
-
-
-
----------------------------------------------------------------------------------------------------
--------------------------------- TESTS CONTRAINTES AUTOMATISATIONS --------------------------------
----------------------------------------------------------------------------------------------------
-
-
-
-
-
-
----------------------------------------------------------------------------- TestIndicePrioritePlus
-
-
-/*
-  Test Indice Priorité Invalide > 3
- */
 create or replace procedure TestIndicePrioritePlus as
-CHECK_CONSTRAINT_VIOLATED EXCEPTION;
-pragma exception_init(check_constraint_violated, -2290); --permet de capturer les exceptions levées par un "check"
-
+  CHECK_CONSTRAINT_VIOLATED EXCEPTION;
+  pragma exception_init(check_constraint_violated, -2290); -- Permet de capturer les exceptions levées par un "check"
 begin
-commit; -- definition du point de démarrage de début de test
-
-insert into RESULTAT values
-(
-    1,
-    1,
-    TO_DATE( 'October 10, 2020', 'MONTH DD, YYYY' )
-);
-insert into REACTIF values
-(
-    1,
-    55,
-    'reactif'
-);
-insert into TYPERELEVE values
-(
-    1,
-    (select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),
-    'releve'
-);
-insert into EXPERIENCE values
-(
-    1,
-    1,
-    2,
-    1,
-    5,
-    1,
-    TO_DATE( 'September 10, 2020', 'MONTH DD, YYYY' ),
-    TO_DATE( 'October 10, 2020', 'MONTH DD, YYYY' ),
-    null,
-    2,
-    TO_DATE( 'September 09, 2020', 'MONTH DD, YYYY' ),
-    2,
-    4,
-    'technicien',
-    'chercheur',
-    3,
-    6,
-    2,
-    null,
+  commit; -- Définition du point de démarrage de début de test
+  insert into RESULTAT values (1,1,'10-OCT-20');
+  insert into REACTIF values (1,55,'reactif');
+  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'releve');
+  insert into EXPERIENCE values (
+    1,1,2,1,5,1,'10-SEPT-20','10-OCT-20',null,2,'09-SEPT-20'2,
+    4, -- Insertion priorite invalide (prio > 3)
+    'technicien','chercheur',3,6,2,null,
     (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='releve'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
-); -- insertion priorite invalide (prio > 3)
-
-rollback; -- suppression de toutes les données de contexte du test
-insert into resultat_test values ('TestIndicePrioritePlus', 0); -- si rien ne se passe, le test échoue
-commit; --validation du résultat du test
-
-EXCEPTION
+  ); 
+  rollback; -- Suppression de toutes les données de contexte du test
+  insert into resultat_test values ('TestIndicePrioritePlus', 0); -- Si rien ne se passe, le test échoue
+  commit; -- Validation du résultat du test
+  EXCEPTION
     WHEN CHECK_CONSTRAINT_VIOLATED THEN
-		rollback; -- suppression de toutes les données de contexte du test
-insert into resultat_test values ('TestIndicePrioritePlus', 1); -- si une exception "check" est levée, le test réussi
-commit; --validation du résultat du test
+    rollback; -- Suppression de toutes les données de contexte du test
+    insert into resultat_test values ('TestIndicePrioritePlus', 1); -- Si une exception "check" est levée, le test réussi
+    commit; -- Validation du résultat du test
 end;
 /
-
 begin
-TestIndicePrioritePlus;
+  TestIndicePrioritePlus;
 end;
 /
 
+---------------------------------------- Indice Priorité Invalide < 1
 
-/**
-  Test Indice Priorité Invalide <1
- */
 create or replace procedure TestIndicePrioriteMoins as
-CHECK_CONSTRAINT_VIOLATED EXCEPTION;
-pragma exception_init(check_constraint_violated, -2290) ; --permet de capturer les exceptions levées par un "check"
-
+  CHECK_CONSTRAINT_VIOLATED EXCEPTION;
+  pragma exception_init(check_constraint_violated, -2290); 
 begin
-commit; -- definition du point de démarrage de début de test
-
-insert into RESULTAT values
-(
-    1,
-    1,
-    TO_DATE( 'October 10, 2020', 'MONTH DD, YYYY' )
-);
-insert into REACTIF values
-(
-    1,
-    55,
-    'reactif'
-);
-insert into TYPERELEVE values
-(
-    1,
-    (select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),
-    'releve'
-);
-insert into EXPERIENCE values
-(
-    1,
-    1,
-    2,
-    1,
-    5,
-    1,
-    TO_DATE( 'September 10, 2020', 'MONTH DD, YYYY' ),
-    TO_DATE( 'October 10, 2020', 'MONTH DD, YYYY' ),
-    null,
-    2,
-    TO_DATE( 'September 09, 2020', 'MONTH DD, YYYY' ),
-    2,
-    0,
-    'technicien',
-    'chercheur',
-    3,
-    6,
-    2,
-    null,
+  commit;
+  insert into RESULTAT values (1,1,'10-OCT-20');
+  insert into REACTIF values (1,55,'reactif');
+  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'releve');
+  insert into EXPERIENCE values (
+    1,1,2,1,5,1,'10-SEPT-20','10-OCT-20',null,2,'09-SEPT-20'2,
+    0, -- Insertion priorite invalide (prio < 1)
+    'technicien','chercheur',3,6,2,null,
     (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='releve'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
-); -- insertion priorite invalide (prio < 1)
-
-rollback; -- suppression de toutes les données de contexte du test
-insert into resultat_test values ('TestIndicePrioriteMoins', 0); -- si rien ne se passe, le test échoue
-commit; --validation du résultat du test
-
-EXCEPTION
+  ); 
+  rollback;
+  insert into resultat_test values ('TestIndicePrioriteMoins', 0);
+  commit;
+  EXCEPTION
     WHEN CHECK_CONSTRAINT_VIOLATED THEN
-		rollback; -- suppression de toutes les données de contexte du test
-insert into resultat_test values ('TestIndicePrioriteMoins', 1); -- si une exception "check" est levée, le test réussi
-commit; --validation du résultat du test
+		rollback;
+    insert into resultat_test values ('TestIndicePrioriteMoins', 1);
+    commit;
 end;
 /
-
 begin
-TestIndicePrioriteMoins;
+  TestIndicePrioriteMoins;
 end;
 /
 
+-------------------------------------- Indice Priorité Invalide = 2.5
 
-
-/**
-  Test Indice Priorité invalide = 2.5
- */
 create or replace procedure TestIndicePrioriteEntre as
-CHECK_CONSTRAINT_VIOLATED EXCEPTION;
-pragma exception_init(check_constraint_violated, -2290) ; --permet de capturer les exceptions levées par un "check"
-
+  CHECK_CONSTRAINT_VIOLATED EXCEPTION;
+  pragma exception_init(check_constraint_violated, -2290);
 begin
-commit; -- definition du point de démarrage de début de test
-
-insert into RESULTAT values
-(
-    1,
-    1,
-    TO_DATE( 'October 10, 2020', 'MONTH DD, YYYY' )
-);
-insert into REACTIF values
-(
-    1,
-    55,
-    'reactif'
-);
-insert into TYPERELEVE values
-(
-    1,
-    (select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),
-    'releve'
-);
-insert into EXPERIENCE values
-(
-    1,
-    1,
-    2,
-    1,
-    5,
-    1,
-    TO_DATE( 'September 10, 2020', 'MONTH DD, YYYY' ),
-    TO_DATE( 'October 10, 2020', 'MONTH DD, YYYY' ),
-    null,
-    2,
-    TO_DATE( 'September 09, 2020', 'MONTH DD, YYYY' ),
-    2,
-    0,
-    'technicien',
-    'chercheur',
-    2.5,
-    6,
-    2,
-    null,
+  commit;
+  insert into RESULTAT values (1,1,'10-OCT-20');
+  insert into REACTIF values (1,55,'reactif');
+  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'releve');
+  insert into EXPERIENCE values (
+    1,1,2,1,5,1,'10-SEPT-20','10-OCT-20',null,2,'09-SEPT-20'2,
+    2.5, -- Insertion priorite invalide (prio = 2.5)
+    'technicien','chercheur',3,6,2,null,
     (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='releve'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
-); -- insertion priorite invalide (prio = 2.5)
-
-rollback; -- suppression de toutes les données de contexte du test
-insert into resultat_test values ('TestIndicePrioriteEntre', 0); -- si rien ne se passe, le test échoue
-commit; --validation du résultat du test
-
-EXCEPTION
+  );
+  rollback;
+  insert into resultat_test values ('TestIndicePrioriteEntre', 0);
+  commit;
+  EXCEPTION
     WHEN CHECK_CONSTRAINT_VIOLATED THEN
-		rollback; -- suppression de toutes les données de contexte du test
-insert into resultat_test values ('TestIndicePrioriteEntre', 1); -- si une exception "check" est levée, le test réussi
-commit; --validation du résultat du test
+		rollback;
+  insert into resultat_test values ('TestIndicePrioriteEntre', 1);
+  commit;
 end;
 /
-
 begin
-TestIndicePrioriteEntre;
+  TestIndicePrioriteEntre;
 end;
 /
 
@@ -278,9 +138,8 @@ end;
   Test Indice Priorité valide = 2
  */
 create or replace procedure TestIndicePriorite as
-CHECK_CONSTRAINT_VIOLATED EXCEPTION;
-pragma exception_init(check_constraint_violated, -2290) ; --permet de capturer les exceptions levées par un "check"
-
+  CHECK_CONSTRAINT_VIOLATED EXCEPTION;
+  pragma exception_init(check_constraint_violated, -2290) ; --permet de capturer les exceptions levées par un "check"
 begin
 commit; -- definition du point de démarrage de début de test
 
@@ -343,6 +202,20 @@ begin
 TestIndicePriorite;
 end;
 /
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /*
@@ -555,6 +428,39 @@ begin
 TestEntre0et1;
 end;
 /
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------------------------
+------------------------------- TESTS CONTRAINTES NON STRUCTURELLES -------------------------------
+---------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+---------------------------------------------------------------------------------------------------
+-------------------------------- TESTS CONTRAINTES AUTOMATISATIONS --------------------------------
+---------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+---------------------------------------------------------------------------- TestIndicePrioritePlus
+
+
 
 /*
   Test NumSlot valide (NbSlotPourGroupe = 255)
@@ -1068,7 +974,7 @@ create table TraceTest (
 
 create or replace procedure TestP_VerificationNomReleve as
     check_constraint_violated exception;
-    pragma exception_init(check_constraint_violated, -2290);
+    pragma exception_init(check_constraint_violated, -20001);
 begin
     commit;
     insert into REACTIF values
@@ -1104,7 +1010,7 @@ end;
 /*Test negatif -- cas ou le nom est faux*/
 create or replace procedure TestN_VerificationNomReleve as
     check_constraint_violated exception;
-    pragma exception_init(check_constraint_violated, -2290);
+    pragma exception_init(check_constraint_violated, -20001);
 begin
     commit;
     insert into REACTIF values
@@ -1429,4 +1335,157 @@ commit;
 
 
 
+
+
+
+
+
+
+drop table resultat_test;
+create table resultat_test (nomTest varchar2(100), resultat number(1) check(resultat in (0,1)));
+
+
+/**
+  Test positif pour T_VerificationDateExp DébutExp < FinExp
+ */
+create or replace procedure Test_T_VerificationDateExpPositif as
+CHECK_CONSTRAINT_VIOLATED EXCEPTION;
+pragma exception_init(check_constraint_violated, -20001) ; --permet de capturer les exceptions levées par un "check"
+
+begin
+commit; -- definition du point de démarrage de début de test
+
+insert into RESULTAT values
+(
+    1,
+    1,
+    TO_DATE( 'October 10, 2020', 'MONTH DD, YYYY' )
+);
+insert into REACTIF values
+(
+    1,
+    55,
+    'reactif'
+);
+insert into TYPERELEVE values
+(
+    1,
+    (select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),
+    'releve'
+);
+insert into EXPERIENCE values
+(
+    1,
+    1,
+    2,
+    1,
+    5,
+    1,
+    TO_DATE( 'September 10, 2020', 'MONTH DD, YYYY' ),
+    TO_DATE( 'October 10, 2020', 'MONTH DD, YYYY' ),
+    null,
+    2,
+    TO_DATE( 'September 09, 2020', 'MONTH DD, YYYY' ),
+    2,
+    3,
+    'technicien',
+    'chercheur',
+    3,
+    6,
+    2,
+    null,
+    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='releve'),
+    (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
+); -- insertion valide DebutExp<FinExp
+
+rollback; -- suppression de toutes les données de contexte du test
+insert into resultat_test values ('Test_T_VerificationDateExpPositif', 1); -- si une exception "check" est levée, le test réussi
+commit; --validation du résultat du test
+
+EXCEPTION
+    WHEN CHECK_CONSTRAINT_VIOLATED THEN
+		rollback; -- suppression de toutes les données de contexte du test
+insert into resultat_test values ('Test_T_VerificationDateExpPositif', 0); -- si rien ne se passe, le test échoue
+commit; --validation du résultat du test
+end;
+/
+
+begin
+Test_T_VerificationDateExpPositif;
+end;
+/
+
+
+/**
+  Test negatif pour T_VerificationDateExp DébutExp > FinExp
+ */
+create or replace procedure Test_T_VerificationDateExpNegatif as
+CHECK_CONSTRAINT_VIOLATED EXCEPTION;
+pragma exception_init(check_constraint_violated, -20001) ; --permet de capturer les exceptions levées par un "check"
+
+begin
+commit; -- definition du point de démarrage de début de test
+
+insert into RESULTAT values
+(
+    1,
+    1,
+    TO_DATE( 'October 10, 2020', 'MONTH DD, YYYY' )
+);
+insert into REACTIF values
+(
+    1,
+    55,
+    'reactif'
+);
+insert into TYPERELEVE values
+(
+    1,
+    (select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),
+    'releve'
+);
+insert into EXPERIENCE values
+(
+    1,
+    1,
+    2,
+    1,
+    5,
+    1,
+    TO_DATE( 'October 10, 2020', 'MONTH DD, YYYY' ),
+    TO_DATE( 'September 10, 2020', 'MONTH DD, YYYY' ),
+    null,
+    2,
+    TO_DATE( 'September 09, 2020', 'MONTH DD, YYYY' ),
+    2,
+    3,
+    'technicien',
+    'chercheur',
+    3,
+    6,
+    2,
+    null,
+    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='releve'),
+    (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
+); -- insertion Invalide DebutExp>FinExp
+
+rollback; -- suppression de toutes les données de contexte du test
+insert into resultat_test values ('Test_T_VerificationDateExpNegatif', 0); -- si rien ne se passe, le test échoue
+commit; --validation du résultat du test
+
+EXCEPTION
+    WHEN CHECK_CONSTRAINT_VIOLATED THEN
+		rollback; -- suppression de toutes les données de contexte du test
+        insert into resultat_test values ('Test_T_VerificationDateExpNegatif', 1); -- si une exception "check" est levée, le test réussi
+commit; --validation du résultat du test
+end;
+/
+
+begin
+Test_T_VerificationDateExpNegatif;
+end;
+/
+
+select * from resultat_test;
+commit;
 
