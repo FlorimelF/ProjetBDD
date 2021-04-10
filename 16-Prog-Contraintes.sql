@@ -76,3 +76,35 @@ end if;
 end;
 /
 commit;
+
+------------------------------------------------------------------------------ T_IntégrationReactif
+-- Eviter les redondances de réactifs : 
+-- Si le nom du réactif est déjà dans la BDD, il n'est pas à nouveau inséré
+-- (ne pas tenir compte de la casse, ni des accents)
+
+create or replace trigger T_IntégrationReactif after insert on REACTIF
+declare
+  nbReac integer:=0;
+begin
+  select count() into nbReac from (select count () from REACTIF group by upper(nomReactif) having count(*) > 1) maTable;
+  if nbReac = 1 then
+    raise_application_error(-20001, 'Ce réactif existe déjà');
+  end if;
+end;
+/
+commit;
+
+--------------------------------------------------------------------------- T_VérificationNomRelevé
+-- Nom_Relevé doit contenir "Colorimétrique" ou "Opacimétrique" exclusivement
+
+create or replace trigger T_VérificationNomRelevé before insert on TYPERELEVE for each row
+declare
+  nom1 VARCHAR(20):='Colorimétrique';
+  nom2 VARCHAR(20):='Opacimétrique';
+begin
+  if upper(:new.Nom_releve) <> upper(nom1) or upper(:new.Nom_releve) <> upper(nom2) then
+    raise_application_error(-20001, 'Le nom du releve doit contenir "Colorimétrique" ou "Opacimétrique" exclusivement');
+  end if;
+end;
+/
+commit;
