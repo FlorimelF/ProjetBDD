@@ -4,16 +4,16 @@
 
 ---------------------------------------------------------------- ORDRE DES PROCEDURES DE PEUPLEMENT
 
--- 1.   TypePlaque          Table de Dimension    Ok
+-- 1.   TypePlaque          Table de Dimension      Ok
 -- 2.   LotPlaque           Table de relation
 -- 3.   Plaque              Table de relation
--- 4.   Photometre          Table de Dimension    OK
+-- 4.   Photometre          Table de Dimension      OK
 -- 5.   Photo               Table de relation
--- 6.   Reactif             Table de Dimension    OK
--- 7.   TypeReleve          Table de relation     OK
+-- 6.   Reactif             Table de Dimension      OK
+-- 7.   TypeReleve          Table de relation       OK
 -- 8.   Resultat            Table de Dimension
 -- 9.   Experience          Table de relation
--- 10.  Facture             Table de Dimension    OK
+-- 10.  Facture             Table de Dimension      OK
 -- 11.  Est_attache         Table de relation
 -- 12.  Solution            Table de Dimension
 -- 13.  Groupe              Table de relation

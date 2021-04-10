@@ -2,12 +2,62 @@
 -- Florimel-FLOTTE
 -- Salomé-REBOURS
 
-/*
- Création de la table qui contient les résultats de test
- */
-drop table resultat_test;
-create table resultat_test (nomTest varchar2(100), resultat number(1) check(resultat in (0,1)));
+------------------------------------------------------------------------------------------ SOMMAIRE
 
+--------------------------- Tests contraintes structurelles (domaine)
+-- 1.   
+-- 2.   
+-- 3.   
+-- 4.   
+
+--------------------------------- Tests contraintes non structurelles
+-- 1.   
+-- 2.   
+-- 3.   
+-- 4.  
+
+----------------------------------------------- Tests automatisations
+-- 1.   
+-- 2.   
+-- 3.   
+-- 4.  
+
+----------------------------------------------------------------------- Table de résultat des tests
+
+drop table TraceTest;
+create table TraceTest (
+  nomTest varchar2(100), 
+  resultat number(1) check(resultat in (0,1))
+);
+
+---------------------------------------------------------------------------------------------------
+--------------------------------- TESTS CONTRAINTES STRUCTURELLES ---------------------------------
+---------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+---------------------------------------------------------------------------------------------------
+------------------------------- TESTS CONTRAINTES NON STRUCTURELLES -------------------------------
+---------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+---------------------------------------------------------------------------------------------------
+-------------------------------- TESTS CONTRAINTES AUTOMATISATIONS --------------------------------
+---------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+---------------------------------------------------------------------------- TestIndicePrioritePlus
 
 
 /*
@@ -1258,7 +1308,7 @@ create table TraceTest (
 /*Test positif*/
 create or replace procedure testP_VerificationDateDemande as
   check_constraint_violated exception;
-  pragma exception_init(check_constraint_violated, -2290);
+  pragma exception_init(check_constraint_violated, -20001);
 begin
   commit;
   insert into RESULTAT values (
@@ -1318,7 +1368,7 @@ commit;
 /*Test negatif*/
 create or replace procedure testN_VerificationDateDemande as
   check_constraint_violated exception;
-  pragma exception_init(check_constraint_violated, -2290);
+  pragma exception_init(check_constraint_violated, -20001);
 begin
   commit;
   insert into RESULTAT values (
