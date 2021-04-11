@@ -2,6 +2,8 @@
 -- Florimel-FLOTTE
 -- Salomé-REBOURS
 
+-- 
+
 -------------------------------------------------------------------------------------------------------------- SOMMAIRE
 
 ------------------------------------------------------------------------ Contraintes
@@ -10,8 +12,8 @@
 -- 2.   T_VerificationDateDemande
 -- 3.   T_VerificationNiveauAcceptation
 -- 4.   T_IntégrationReactif
--- 5.   T_VérificationNomRelevé
--- 6.   T_TestVerificationDivisionEntiere
+-- 5.   T_VerificationNomRelevé
+-- 6.   T_VerificationDivisionEntiere
 
 -------------------------------------------------------------------- Automatisations
 
@@ -29,7 +31,7 @@ create or replace trigger T_VerificationDateExp before insert on EXPERIENCE for 
 begin
   if :new.DEBUTEXP > :new.FINEXP then
     raise_application_error(-20001, 'Les dates de début et de fin pour une expérience ne sont pas cohérentes');
-end if;
+  end if;
 end;
 /
 commit;
@@ -40,7 +42,7 @@ commit;
 create or replace trigger T_VerificationDateDemande before insert on EXPERIENCE for each row
 begin
   if :new.DEBUTEXP < :new.DATECHERCHEUR then
-    raise_application_error(-20001, 'Les dates de demande et de début pour une expérience ne sont pas cohérentes');
+    raise_application_error(-20002, 'Les dates de demande et de début pour une expérience ne sont pas cohérentes');
   end if;    
 end;
 /
@@ -52,8 +54,8 @@ commit;
 create or replace trigger T_VerificationNiveauAcceptation before insert on EXPERIENCE for each row
 begin
   if :new.a1 > :new.a2 then
-    raise_application_error(-20001, 'Attention, a1 doit être < ou = de a2');
-end if;
+    raise_application_error(-20003, 'Attention, a1 doit être < ou = de a2');
+  end if;
 end;
 /
 commit;
@@ -69,7 +71,7 @@ declare
 begin
   select count(*) into nbReac from (select count (*) from REACTIF group by upper(nomReactif) having count(*) > 1) maTable;
   if nbReac = 1 then
-    raise_application_error(-20001, 'Ce réactif existe déjà');
+    raise_application_error(-20004, 'Ce réactif existe déjà');
   end if;
 end;
 /
@@ -84,20 +86,22 @@ declare
   nom2 VARCHAR(20):='Opacimétrique';
 begin
   if upper(:new.Nom_releve) <> upper(nom1) or upper(:new.Nom_releve) <> upper(nom2) then
-    raise_application_error(-20001, 'Le nom du releve doit contenir "Colorimétrique" ou "Opacimétrique" exclusivement');
+    raise_application_error(-20005, 'Le nom du releve doit contenir "Colorimétrique" ou "Opacimétrique" exclusivement');
   end if;
 end;
 /
 commit;
 
-------------------------------------------------------------------------------------- T_TestVerificationDivisionEntiere
+----------------------------------------------------------------------------------------- T_VerificationDivisionEntiere
 -- Durée et fObservation sont tels que d/f donne un résultat entier
 
-create or replace trigger T_TestVerificationDivisionEntiere before insert on EXPERRIENCE for each row
-declare
-  
+create or replace trigger T_VerificationDivisionEntiere before insert on EXPERIENCE for each row
 begin
-  
+  if :new.fObservation <> null then
+    if mod(:new.fObservation,:new.Duree) <> 0 then
+      raise_application_error(-20006, 'd/f ne donne pas un résultat entier');
+    end if;
+  end if;
 end;
 /
 commit;

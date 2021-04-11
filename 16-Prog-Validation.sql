@@ -12,12 +12,13 @@
 -- 5.   TestDiff0Positif
 
 ------------------------------------------------ Tests contraintes non structurelles
--- 1.   VerificationNomRelevé
--- 2.   VerificationDivisionEntiere
--- 3.   VerificationDateDemande
--- 4.   VerificationDateExp
--- 5.   IntégrationReactif
--- 6.   VerificationNiveauAcceptation
+
+-- 1.   VerificationDateExp
+-- 2.   VerificationDateDemande
+-- 3.   VerificationNiveauAcceptation
+-- 4.   IntégrationReactif
+-- 5.   VerificationNomRelevé
+-- 6.   VerificationDivisionEntiere
 
 -------------------------------------------------------------- Tests automatisations
 -- 1.   AutoCalculCoeffSurcout
@@ -515,226 +516,6 @@ commit;
 ----------------------------------------- TESTS CONTRAINTES NON STRUCTURELLES -----------------------------------------
 -----------------------------------------------------------------------------------------------------------------------
 
-------------------------------------------------------------------------------------------------- VerificationNomRelevé
--- Nom_Relevé doit contenir "Colorimétrique" ou "Opacimétrique" exclusivement
-
---------------------------------------------------------------------- Test positif "colorimetrique"
-
-create or replace procedure TestP_VerificationNomReleve1 as
-  check_constraint_violated exception;
-  pragma exception_init(check_constraint_violated, -20001);
-begin
-  commit;
-  insert into REACTIF values (1,25,'ReactifNumero1');
-  insert into TYPERELEVE values (1,1,'colorimetrique'); -- Nom_Relevé valide
-  rollback;
-  insert into TraceTest values ('TestP_VerificationNomReleve1',1);
-  commit;
-  exception
-    when check_constraint_violated then
-      rollback;
-      insert into TraceTest values ('TestP_VerificationNomReleve1',0);
-      commit;
-end;
-/
-begin
-  TestP_VerificationNomReleve1;
-end;
-/
-commit;
-
--------------------------------------------------------------------- Test positif 2 "opacimetrique"
-
-create or replace procedure TestP_VerificationNomReleve2 as
-  check_constraint_violated exception;
-  pragma exception_init(check_constraint_violated, -20001);
-begin
-  commit;
-  insert into REACTIF values (1,25,'ReactifNumero1');
-  insert into TYPERELEVE values (1,1,'opacimetrique'); -- Nom_Relevé valide
-  rollback;
-  insert into TraceTest values ('TestP_VerificationNomReleve2',1);
-  commit;
-  exception
-    when check_constraint_violated then
-      rollback;
-      insert into TraceTest values ('TestP_VerificationNomReleve2',0);
-      commit;
-end;
-/
-begin
-  TestP_VerificationNomReleve2;
-end;
-/
-commit;
-
--------------------------------------------------------------------------------------- Test négatif
-
-create or replace procedure TestN_VerificationNomReleve as
-  check_constraint_violated exception;
-  pragma exception_init(check_constraint_violated, -20001);
-begin
-  commit;
-  insert into REACTIF values (1,25,'ReactifNumero1');
-  insert into TYPERELEVE values (1,1,'releveNonPrevu'); -- Nom_Relevé invalide
-  rollback;
-  insert into TraceTest values ('TestN_VerificationNomReleve',0);
-  commit;
-  exception
-    when check_constraint_violated then
-      rollback;
-      insert into TraceTest values ('TestN_VerificationNomReleve',1);
-      commit;
-end;
-/
-begin
-  TestN_VerificationNomReleve;
-end;
-/
-commit;
-
-------------------------------------------------------------------------------------------- VerificationDivisionEntiere
--- Durée et fObservation sont tels que d/f donne un résultat entier
-
--------------------------------------------------------------------------------------- Test positif
-
-create or replace procedure TestP_VerificationDivisionEntiere as
-    check_constraint_violated exception;
-    pragma exception_init(check_constraint_violated, -2290);
-begin
-  commit;
-  insert into RESULTAT values (1,1,'10-OCT-20');
-  insert into REACTIF values (1,55,'ReactifNumero1');
-  insert into TYPERELEVE values (1,1,'colorimetrique');
-  insert into EXPERIENCE values (
-    1,1,2,1,5,1,'10-SEPT-20','10-OCT-20',
-    2,4, -- Insertion Durée et fObservation valides (4/2=2)
-    '09-SEPT-20',2,3,'technicien','chercheur',3,6,2,null,
-    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='colorimetrique'),
-    (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
-  );
-  rollback;
-  insert into TraceTest values ('TestP_VerificationDivisionEntiere',1);
-  commit;
-  exception
-    when check_constraint_violated then
-      rollback;
-      insert into TraceTest values ('TestP_VerificationDivisionEntiere',0);
-      commit;
-end;
-/
-begin
-  TestP_VerificationDivisionEntiere;
-end;
-/
-commit;
-
--------------------------------------------------------------------------------------- Test négatif
-
-create or replace procedure TestN_VerificationDivisionEntiere as
-    check_constraint_violated exception;
-    pragma exception_init(check_constraint_violated, -20001);
-begin
-  commit;
-  insert into RESULTAT values (1,1,'10-OCT-20');
-  insert into REACTIF values (1,55,'ReactifNumero1');
-  insert into TYPERELEVE values (1,1,'colorimetrique');
-  insert into EXPERIENCE values (
-    1,1,2,1,5,1,'10-SEPT-20','10-OCT-20',
-    2,3, -- Insertion Durée et fObservation valides (3/2=1,5)
-    '09-SEPT-20',2,3,'technicien','chercheur',3,6,2,null,
-    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='colorimetrique'),
-    (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
-  );
-  rollback;
-  insert into TraceTest values ('TestN_VerificationDivisionEntiere',0);
-  commit;
-  exception
-    when check_constraint_violated then
-      rollback;
-      insert into TraceTest values ('TestN_VerificationDivisionEntiere',1);
-      commit;
-end;
-/
-begin
-  TestN_VerificationDivisionEntiere;
-end;
-/
-commit;
-
------------------------------------------------------------------------------------------------ VerificationDateDemande
--- DateChercheur <= DébutExp
-
--------------------------------------------------------------------------------------- Test positif
-
-create or replace procedure testP_VerificationDateDemande as
-    check_constraint_violated exception;
-    pragma exception_init(check_constraint_violated, -20001);
-begin
-  commit;
-  insert into RESULTAT values (1,1,'10-OCT-20');
-  insert into REACTIF values (1,55,'reactif');
-  insert into TYPERELEVE values (1,1,'colorimetrique');
-  insert into EXPERIENCE values (
-    1,1,2,1,5,1,
-    '10-SEPT-20', -- Insertion DébutExp
-    '10-OCT-20',2,4,
-    '09-SEPT-20', -- Insertion DateChercheur
-    2,3,'technicien','chercheur',3,6,2,null,
-    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='colorimetrique'),
-    (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
-  );
-  rollback;
-  insert into TraceTest values ('testP_VerificationDateDemande',1);
-  commit;
-  exception
-    when check_constraint_violated then
-      rollback;
-      insert into TraceTest values ('testP_VerificationDateDemande',0);
-      commit;
-end;
-/
-begin
-  testP_VerificationDateDemande;
-end;
-/
-commit;
-
--------------------------------------------------------------------------------------- Test négatif
-
-create or replace procedure testN_VerificationDateDemande as
-  check_constraint_violated exception;
-  pragma exception_init(check_constraint_violated, -20001);
-begin
-  commit;
-  insert into RESULTAT values (1,1,'10-OCT-20');
-  insert into REACTIF values (1,55,'reactif');
-  insert into TYPERELEVE values (1,1,'colorimetrique');
-  insert into EXPERIENCE values (
-    1,1,2,1,5,1,
-    '10-SEPT-20', -- Insertion DébutExp
-    '10-OCT-20',2,4,
-    '12-SEPT-20', -- Insertion DateChercheur
-    2,3,'technicien','chercheur',3,6,2,null,
-    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='colorimetrique'),
-    (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
-  );
-  rollback;
-  insert into TraceTest values ('testN_VerificationDateDemande',0);
-  commit;
-  exception
-    when check_constraint_violated then
-      rollback;
-      insert into TraceTest values ('testN_VerificationDateDemande',1);
-      commit; 
-end;
-/
-begin
-  testN_VerificationDateDemande;
-end;
-/
-commit;
-
 --------------------------------------------------------------------------------------------------- VerificationDateExp
 -- DébutExp <= FinExp
 
@@ -804,57 +585,75 @@ end;
 /
 commit;
 
----------------------------------------------------------------------------------------------------- IntégrationReactif
--- Eviter les redondances de réactifs : 
--- Si le nom du réactif est déjà dans la BDD, il n'est pas à nouveau inséré
--- (ne pas tenir compte de la casse, ni des accents)
+----------------------------------------------------------------------------------------------- VerificationDateDemande
+-- DateChercheur <= DébutExp
 
 -------------------------------------------------------------------------------------- Test positif
 
-create or replace procedure TestP_PlacementGroupe as
-  CHECK_CONSTRAINT_VIOLATED EXCEPTION;
-  pragma exception_init(check_constraint_violated, -20001) ;  
+create or replace procedure testP_VerificationDateDemande as
+    check_constraint_violated exception;
+    pragma exception_init(check_constraint_violated, -20002);
 begin
   commit;
-  insert into REACTIF values (1,10,'Reactif1');
-  insert into REACTIF values (2,15,'Reactif2');
+  insert into RESULTAT values (1,1,'10-OCT-20');
+  insert into REACTIF values (1,55,'reactif');
+  insert into TYPERELEVE values (1,1,'colorimetrique');
+  insert into EXPERIENCE values (
+    1,1,2,1,5,1,
+    '10-SEPT-20', -- Insertion DébutExp
+    '10-OCT-20',2,4,
+    '09-SEPT-20', -- Insertion DateChercheur
+    2,3,'technicien','chercheur',3,6,2,null,
+    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='colorimetrique'),
+    (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
+  );
   rollback;
-  insert into TraceTest values ('TestP_PlacementGroupe',1);
+  insert into TraceTest values ('testP_VerificationDateDemande',1);
   commit;
   exception
     when check_constraint_violated then
       rollback;
-      insert into TraceTest values ('TestP_PlacementGroupe',0);
-      commit; 
+      insert into TraceTest values ('testP_VerificationDateDemande',0);
+      commit;
 end;
 /
 begin
-  TestP_PlacementGroupe;
+  testP_VerificationDateDemande;
 end;
 /
 commit;
 
 -------------------------------------------------------------------------------------- Test négatif
 
-create or replace procedure TestN_PlacementGroupe as
-  CHECK_CONSTRAINT_VIOLATED EXCEPTION;
-  pragma exception_init(check_constraint_violated, -20001) ;
+create or replace procedure testN_VerificationDateDemande as
+  check_constraint_violated exception;
+  pragma exception_init(check_constraint_violated, -20002);
 begin
   commit;
-  insert into REACTIF values (1,10,'Reactif1');
-  insert into REACTIF values (2,15,'Reactif1');
+  insert into RESULTAT values (1,1,'10-OCT-20');
+  insert into REACTIF values (1,55,'reactif');
+  insert into TYPERELEVE values (1,1,'colorimetrique');
+  insert into EXPERIENCE values (
+    1,1,2,1,5,1,
+    '10-SEPT-20', -- Insertion DébutExp
+    '10-OCT-20',2,4,
+    '12-SEPT-20', -- Insertion DateChercheur
+    2,3,'technicien','chercheur',3,6,2,null,
+    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='colorimetrique'),
+    (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
+  );
   rollback;
-  insert into TraceTest values ('TestN_PlacementGroupe',0);
+  insert into TraceTest values ('testN_VerificationDateDemande',0);
   commit;
   exception
     when check_constraint_violated then
       rollback;
-      insert into TraceTest values ('TestN_PlacementGroupe',1);
+      insert into TraceTest values ('testN_VerificationDateDemande',1);
       commit; 
 end;
 /
 begin
-  TestN_PlacementGroupe;
+  testN_VerificationDateDemande;
 end;
 /
 commit;
@@ -866,7 +665,7 @@ commit;
 
 create or replace procedure testP_VerificationNiveauAcceptation as
     check_constraint_violated exception;
-    pragma exception_init(check_constraint_violated, -20001);
+    pragma exception_init(check_constraint_violated, -20003);
 begin
   commit;
   insert into RESULTAT values (1,1,'10-OCT-20');
@@ -899,7 +698,7 @@ commit;
 
 create or replace procedure testN_VerificationNiveauAcceptation as
     check_constraint_violated exception;
-    pragma exception_init(check_constraint_violated, -20001);
+    pragma exception_init(check_constraint_violated, -20003);
 begin
   commit;
   insert into RESULTAT values (1,1,'10-OCT-20');
@@ -924,6 +723,208 @@ end;
 /
 begin
   testN_VerificationNiveauAcceptation;
+end;
+/
+commit;
+
+---------------------------------------------------------------------------------------------------- IntégrationReactif
+-- Eviter les redondances de réactifs : 
+-- Si le nom du réactif est déjà dans la BDD, il n'est pas à nouveau inséré
+-- (ne pas tenir compte de la casse, ni des accents)
+
+-------------------------------------------------------------------------------------- Test positif
+
+create or replace procedure TestP_PlacementGroupe as
+  CHECK_CONSTRAINT_VIOLATED EXCEPTION;
+  pragma exception_init(check_constraint_violated, -20004) ;  
+begin
+  commit;
+  insert into REACTIF values (1,10,'Reactif1');
+  insert into REACTIF values (2,15,'Reactif2');
+  rollback;
+  insert into TraceTest values ('TestP_PlacementGroupe',1);
+  commit;
+  exception
+    when check_constraint_violated then
+      rollback;
+      insert into TraceTest values ('TestP_PlacementGroupe',0);
+      commit; 
+end;
+/
+begin
+  TestP_PlacementGroupe;
+end;
+/
+commit;
+
+-------------------------------------------------------------------------------------- Test négatif
+
+create or replace procedure TestN_PlacementGroupe as
+  CHECK_CONSTRAINT_VIOLATED EXCEPTION;
+  pragma exception_init(check_constraint_violated, -20004) ;
+begin
+  commit;
+  insert into REACTIF values (1,10,'Reactif1');
+  insert into REACTIF values (2,15,'Reactif1');
+  rollback;
+  insert into TraceTest values ('TestN_PlacementGroupe',0);
+  commit;
+  exception
+    when check_constraint_violated then
+      rollback;
+      insert into TraceTest values ('TestN_PlacementGroupe',1);
+      commit; 
+end;
+/
+begin
+  TestN_PlacementGroupe;
+end;
+/
+commit;
+
+------------------------------------------------------------------------------------------------- VerificationNomRelevé
+-- Nom_Relevé doit contenir "Colorimétrique" ou "Opacimétrique" exclusivement
+
+--------------------------------------------------------------------- Test positif "colorimetrique"
+
+create or replace procedure TestP_VerificationNomReleve1 as
+  check_constraint_violated exception;
+  pragma exception_init(check_constraint_violated, -20005);
+begin
+  commit;
+  insert into REACTIF values (1,25,'ReactifNumero1');
+  insert into TYPERELEVE values (1,1,'colorimetrique'); -- Nom_Relevé valide
+  rollback;
+  insert into TraceTest values ('TestP_VerificationNomReleve1',1);
+  commit;
+  exception
+    when check_constraint_violated then
+      rollback;
+      insert into TraceTest values ('TestP_VerificationNomReleve1',0);
+      commit;
+end;
+/
+begin
+  TestP_VerificationNomReleve1;
+end;
+/
+commit;
+
+-------------------------------------------------------------------- Test positif 2 "opacimetrique"
+
+create or replace procedure TestP_VerificationNomReleve2 as
+  check_constraint_violated exception;
+  pragma exception_init(check_constraint_violated, -20005);
+begin
+  commit;
+  insert into REACTIF values (1,25,'ReactifNumero1');
+  insert into TYPERELEVE values (1,1,'opacimetrique'); -- Nom_Relevé valide
+  rollback;
+  insert into TraceTest values ('TestP_VerificationNomReleve2',1);
+  commit;
+  exception
+    when check_constraint_violated then
+      rollback;
+      insert into TraceTest values ('TestP_VerificationNomReleve2',0);
+      commit;
+end;
+/
+begin
+  TestP_VerificationNomReleve2;
+end;
+/
+commit;
+
+-------------------------------------------------------------------------------------- Test négatif
+
+create or replace procedure TestN_VerificationNomReleve as
+  check_constraint_violated exception;
+  pragma exception_init(check_constraint_violated, -20005);
+begin
+  commit;
+  insert into REACTIF values (1,25,'ReactifNumero1');
+  insert into TYPERELEVE values (1,1,'releveNonPrevu'); -- Nom_Relevé invalide
+  rollback;
+  insert into TraceTest values ('TestN_VerificationNomReleve',0);
+  commit;
+  exception
+    when check_constraint_violated then
+      rollback;
+      insert into TraceTest values ('TestN_VerificationNomReleve',1);
+      commit;
+end;
+/
+begin
+  TestN_VerificationNomReleve;
+end;
+/
+commit;
+
+------------------------------------------------------------------------------------------- VerificationDivisionEntiere
+-- Durée et fObservation sont tels que d/f donne un résultat entier
+
+-------------------------------------------------------------------------------------- Test positif
+
+create or replace procedure TestP_VerificationDivisionEntiere as
+    check_constraint_violated exception;
+    pragma exception_init(check_constraint_violated, -20006);
+begin
+  commit;
+  insert into RESULTAT values (1,1,'10-OCT-20');
+  insert into REACTIF values (1,55,'ReactifNumero1');
+  insert into TYPERELEVE values (1,1,'colorimetrique');
+  insert into EXPERIENCE values (
+    1,1,2,1,5,1,'10-SEPT-20','10-OCT-20',
+    2,4, -- Insertion Durée et fObservation valides (4/2=2)
+    '09-SEPT-20',2,3,'technicien','chercheur',3,6,2,null,
+    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='colorimetrique'),
+    (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
+  );
+  rollback;
+  insert into TraceTest values ('TestP_VerificationDivisionEntiere',1);
+  commit;
+  exception
+    when check_constraint_violated then
+      rollback;
+      insert into TraceTest values ('TestP_VerificationDivisionEntiere',0);
+      commit;
+end;
+/
+begin
+  TestP_VerificationDivisionEntiere;
+end;
+/
+commit;
+
+-------------------------------------------------------------------------------------- Test négatif
+
+create or replace procedure TestN_VerificationDivisionEntiere as
+    check_constraint_violated exception;
+    pragma exception_init(check_constraint_violated, -20006);
+begin
+  commit;
+  insert into RESULTAT values (1,1,'10-OCT-20');
+  insert into REACTIF values (1,55,'ReactifNumero1');
+  insert into TYPERELEVE values (1,1,'colorimetrique');
+  insert into EXPERIENCE values (
+    1,1,2,1,5,1,'10-SEPT-20','10-OCT-20',
+    2,3, -- Insertion Durée et fObservation valides (3/2=1,5)
+    '09-SEPT-20',2,3,'technicien','chercheur',3,6,2,null,
+    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='colorimetrique'),
+    (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
+  );
+  rollback;
+  insert into TraceTest values ('TestN_VerificationDivisionEntiere',0);
+  commit;
+  exception
+    when check_constraint_violated then
+      rollback;
+      insert into TraceTest values ('TestN_VerificationDivisionEntiere',1);
+      commit;
+end;
+/
+begin
+  TestN_VerificationDivisionEntiere;
 end;
 /
 commit;

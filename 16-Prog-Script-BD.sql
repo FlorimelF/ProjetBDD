@@ -493,8 +493,6 @@ alter table TYPERELEVE
    add constraint FK_TYPERELE_UTILISE_REACTIF foreign key (IDREACTIF)
       references REACTIF (IDREACTIF);
 
-
-
 ----------------------------------------------------------------------------------------- Automatisation clés primaires
 
 -- 1.   TypePlaque
@@ -622,6 +620,3 @@ begin
   select S_IdTableResultat.nextval into :new.IdTableResultat from dual;
 end;
 /
-
-
-
