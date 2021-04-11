@@ -1,8 +1,5 @@
--- Enola-ROUDAUT
--- Florimel-FLOTTE
--- Salomé-REBOURS
-
--- 
+-- Enola-ROUDAUT   Florimel-FLOTTE   Salomé-REBOURS
+-- Le script de peuplement doit être lancé après le script de création des contraintes
 
 -------------------------------------------------------------------------------------------------------------- SOMMAIRE
 
@@ -18,7 +15,7 @@
 -------------------------------------------------------------------- Automatisations
 
 -- 1.   AutoPlacementGroupe
--- 2.   AutoCalculCoeffSurcout
+-- 2.   AutoCalculCoeffSurcout    Fonctionne pas 
 
 ----------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------- CONTRAINTES ----------------------------------------------------
@@ -98,7 +95,7 @@ commit;
 create or replace trigger T_VerificationDivisionEntiere before insert on EXPERIENCE for each row
 begin
   if :new.fObservation <> null then
-    if mod(:new.fObservation,:new.Duree) <> 0 then
+    if mod(:new.Duree,:new.fObservation) <> 0 then
       raise_application_error(-20006, 'd/f ne donne pas un résultat entier');
     end if;
   end if;
@@ -152,6 +149,8 @@ end;
 -- Le prix total d'une expérience e est multiplié par le coefficient (n + d)/n
 -- n le nombre total d'expériences non réalisées et arrivées avant e (e comprise)
 -- d le nombre d'expériences doublées par e dans la file d'attente, du fait de sa priorité
+
+-- Fonctionne pas 
 
 -- VERSION 1 PRIORITAIRE 
 

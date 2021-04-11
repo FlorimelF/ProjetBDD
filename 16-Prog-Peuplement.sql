@@ -1,8 +1,5 @@
--- Enola-ROUDAUT
--- Florimel-FLOTTE
--- Salomé-REBOURS
-
--- 
+-- Enola-ROUDAUT   Florimel-FLOTTE   Salomé-REBOURS
+-- Le script de peuplement doit être lancé après le script de création des contraintes
 
 ------------------------------------------------------------------------------------ ORDRE DES PROCEDURES DE PEUPLEMENT
 
@@ -190,6 +187,8 @@ insert into TypePlaque values(null,round(DBMS_RANDOM.value(10000,30000)));
 insert into TypePlaque values(null,round(DBMS_RANDOM.value(10000,30000)));
 commit;
 
+select * from TypePlaque;
+
 ------------------------------------------------------------------------------------------------------------ LOTPLAQUE
 
 --------------------------------------------------------------------------------------------------------------- PLAQUE
@@ -216,6 +215,8 @@ end;
 /
 call P_Photometre(20);
 commit;
+
+select * from Photometre;
 
 ---------------------------------------------------------------------------------------------------------------- PHOTO
 
@@ -245,6 +246,8 @@ end;
 /
 call P_Reactif(20);
 commit;
+
+select * from Reactif;
 
 ----------------------------------------------------------------------------------------------------------- TYPERELEVE
 
@@ -281,6 +284,8 @@ end;
 call P_TypeReleve; -- On insère autant de lignes qu'on a de réactifs
 commit;
 
+select * from TypeReleve;
+
 ------------------------------------------------------------------------------------------------------------- RESULTAT
 
 ----------------------------------------------------------------------------------------------------------- EXPERIENCE
@@ -304,6 +309,8 @@ end;
 /
 call P_Facture(20);
 commit;
+
+select * from Facture;
 
 ---------------------------------------------------------------------------------------------------------- EST_ATTACHE
 

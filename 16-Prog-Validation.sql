@@ -1,10 +1,10 @@
--- Enola-ROUDAUT
--- Florimel-FLOTTE
--- Salomé-REBOURS
+-- Enola-ROUDAUT   Florimel-FLOTTE   Salomé-REBOURS
+-- Le script de peuplement doit être lancé après le script de création des contraintes
 
 -------------------------------------------------------------------------------------------------------------- SOMMAIRE
 
 ------------------------------------------ Tests contraintes structurelles (domaine)
+
 -- 1.   TestIndicePriorité
 -- 2.   TestEntre0et1
 -- 3.   TestNumSlot
@@ -18,7 +18,7 @@
 -- 3.   VerificationNiveauAcceptation
 -- 4.   IntégrationReactif
 -- 5.   VerificationNomRelevé
--- 6.   VerificationDivisionEntiere
+-- 6.   VerificationDivisionEntiere       Le test négatif ne fonctionne pas (retourne 0)
 
 -------------------------------------------------------------- Tests automatisations
 -- 1.   AutoCalculCoeffSurcout
@@ -528,7 +528,7 @@ begin
   commit;
   insert into RESULTAT values (1,1,'10-OCT-20');
   insert into REACTIF values (1,55,'reactif');
-  insert into TYPERELEVE values (1,1,'Colorimétrique');
+  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'Colorimétrique');
   insert into EXPERIENCE values (
     1,1,2,1,5,1,
     '10-SEP-20','10-OCT-20', -- Insertion DébutExp < FinExp
@@ -561,7 +561,7 @@ begin
   commit;
   insert into RESULTAT values (1,1,'10-OCT-20');
   insert into REACTIF values (1,55,'reactif');
-  insert into TYPERELEVE values (1,1,'Colorimétrique');
+  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'Colorimétrique');
   insert into EXPERIENCE values (
     1,1,2,1,5,1,
     '10-OCT-20','10-SEP-20', -- Insertion DébutExp < FinExp
@@ -597,7 +597,7 @@ begin
   commit;
   insert into RESULTAT values (1,1,'10-OCT-20');
   insert into REACTIF values (1,55,'reactif');
-  insert into TYPERELEVE values (1,1,'Colorimétrique');
+  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'Colorimétrique');
   insert into EXPERIENCE values (
     1,1,2,1,5,1,
     '10-SEP-20', -- Insertion DébutExp
@@ -632,7 +632,7 @@ begin
   commit;
   insert into RESULTAT values (1,1,'10-OCT-20');
   insert into REACTIF values (1,55,'reactif');
-  insert into TYPERELEVE values (1,1,'Colorimétrique');
+  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'Colorimétrique');
   insert into EXPERIENCE values (
     1,1,2,1,5,1,
     '10-SEP-20', -- Insertion DébutExp
@@ -670,7 +670,7 @@ begin
   commit;
   insert into RESULTAT values (1,1,'10-OCT-20');
   insert into REACTIF values (1,55,'reactif');
-  insert into TYPERELEVE values (1,1,'Colorimétrique');
+  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'Colorimétrique');
   insert into EXPERIENCE values (
     1,
     1,2, -- Insertion valide a1 < a2
@@ -703,7 +703,7 @@ begin
   commit;
   insert into RESULTAT values (1,1,'10-OCT-20');
   insert into REACTIF values (1,55,'reactif');
-  insert into TYPERELEVE values (1,1,'Colorimétrique');
+  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'Colorimétrique');
   insert into EXPERIENCE values (
     1,
     3,2, -- Insertion invalide a1 > a2
@@ -792,8 +792,8 @@ create or replace procedure TestP_VerificationNomReleve1 as
   pragma exception_init(check_constraint_violated, -20005);
 begin
   commit;
-  insert into REACTIF values (1,25,'ReactifNumero1');
-  insert into TYPERELEVE values (1,1,'Colorimétrique'); -- Nom_Relevé valide
+  insert into REACTIF values (1,25,'reactif');
+  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'Colorimétrique'); -- Nom_Relevé valide
   rollback;
   insert into TraceTest values ('TestP_VerificationNomReleve1',1);
   commit;
@@ -817,8 +817,8 @@ create or replace procedure TestP_VerificationNomReleve2 as
   pragma exception_init(check_constraint_violated, -20005);
 begin
   commit;
-  insert into REACTIF values (1,25,'ReactifNumero1');
-  insert into TYPERELEVE values (1,1,'Opacimétrique'); -- Nom_Relevé valide
+  insert into REACTIF values (1,25,'reactif');
+  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'Opacimétrique'); -- Nom_Relevé valide
   rollback;
   insert into TraceTest values ('TestP_VerificationNomReleve2',1);
   commit;
@@ -842,8 +842,8 @@ create or replace procedure TestN_VerificationNomReleve as
   pragma exception_init(check_constraint_violated, -20005);
 begin
   commit;
-  insert into REACTIF values (1,25,'ReactifNumero1');
-  insert into TYPERELEVE values (1,1,'releveNonPrevu'); -- Nom_Relevé invalide
+  insert into REACTIF values (1,25,'reactif');
+  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'releveNonPrevu'); -- Nom_Relevé invalide
   rollback;
   insert into TraceTest values ('TestN_VerificationNomReleve',0);
   commit;
@@ -871,8 +871,8 @@ create or replace procedure TestP_VerificationDivisionEntiere as
 begin
   commit;
   insert into RESULTAT values (1,1,'10-OCT-20');
-  insert into REACTIF values (1,55,'ReactifNumero1');
-  insert into TYPERELEVE values (1,1,'Colorimétrique');
+  insert into REACTIF values (1,55,'reactif');
+  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'Colorimétrique');
   insert into EXPERIENCE values (
     1,1,2,1,5,1,'10-SEP-20','10-OCT-20',
     2,4, -- Insertion Durée et fObservation valides (4/2=2)
@@ -897,6 +897,7 @@ end;
 commit;
 
 -------------------------------------------------------------------------------------- Test négatif
+-- Le test négatif ne fonctionne pas (retourne 0)
 
 create or replace procedure TestN_VerificationDivisionEntiere as
     check_constraint_violated exception;
@@ -904,8 +905,8 @@ create or replace procedure TestN_VerificationDivisionEntiere as
 begin
   commit;
   insert into RESULTAT values (1,1,'10-OCT-20');
-  insert into REACTIF values (1,55,'ReactifNumero1');
-  insert into TYPERELEVE values (1,1,'Colorimétrique');
+  insert into REACTIF values (1,55,'reactif');
+  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'Colorimétrique');
   insert into EXPERIENCE values (
     1,1,2,1,5,1,'10-SEP-20','10-OCT-20',
     2,3, -- Insertion Durée et fObservation valides (3/2=1,5)
@@ -933,19 +934,54 @@ commit;
 ------------------------------------------ TESTS CONTRAINTES AUTOMATISATIONS ------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------
 
+------------------------------------------------------------------------------------------------ AutoCalculCoeffSurcout
+-- Un niveau de priorité supérieur à 1 a un impact sur le coût de l'expérience
+-- Le prix total d'une expérience e est multiplié par le coefficient (n + d)/n
+-- n le nombre total d'expériences non réalisées et arrivées avant e (e comprise)
+-- d le nombre d'expériences doublées par e dans la file d'attente, du fait de sa priorité
 
-
-
-
-
-
-
-
-
-
-
-
-
+create or replace procedure Test_AutoCalculCoeffSurcout as
+  coef NUMBER;
+  coef2 NUMBER;
+begin
+  commit;
+  insert into RESULTAT values (1,1,'10-OCT-20');
+  insert into REACTIF values (1,55,'reactif');
+  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'Colorimétrique');
+  insert into EXPERIENCE values (
+    1,1,2,1,5,1,'10-SEP-20','10-OCT-20',2,4,'09-SEP-20',2,
+    1, -- Insertion indice priorité
+    'technicien','chercheur',3,6,
+    1, -- Insertion coefficient de surcoût
+    null,
+    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
+    (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
+  );
+  insert into EXPERIENCE values (
+    2,1,2,1,5,1,'10-SEP-20','10-OCT-20',2,4,'09-SEP-20',2,
+    2, -- Insertion indice priorité
+    'technicien','chercheur',3,6,
+    0, -- Insertion coefficient de surcoût
+    null,
+    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
+    (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
+  );
+  SELECT COEFFSURCOUT into coef FROM EXPERIENCE WHERE IDEXPERIENCE = 1;
+  SELECT COEFFSURCOUT into coef2 FROM EXPERIENCE WHERE IDEXPERIENCE = 2;
+  if coef=0 and coef2=1.5 then
+    rollback;
+    insert into TraceTest values ('Test_AutoCalculCoeffSurcout',1);
+  else
+    rollback;
+    insert into TraceTest values ('Test_AutoCalculCoeffSurcout',0);
+  end if;
+  commit; 
+end;
+/
+begin
+  Test_AutoCalculCoeffSurcout;
+end;
+/
 
 select * from TraceTest;
 commit;
