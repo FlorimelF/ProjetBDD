@@ -85,7 +85,7 @@ declare
   nom1 VARCHAR(20):='Colorimétrique';
   nom2 VARCHAR(20):='Opacimétrique';
 begin
-  if upper(:new.Nom_releve) <> upper(nom1) or upper(:new.Nom_releve) <> upper(nom2) then
+  if upper(:new.Nom_releve) <> upper(nom1) and upper(:new.Nom_releve) <> upper(nom2) then
     raise_application_error(-20005, 'Le nom du releve doit contenir "Colorimétrique" ou "Opacimétrique" exclusivement');
   end if;
 end;

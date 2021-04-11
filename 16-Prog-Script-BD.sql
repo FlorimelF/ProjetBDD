@@ -1,6 +1,4 @@
--- Enola-ROUDAUT
--- Florimel-FLOTTE
--- Salomé-REBOURS
+-- Enola-ROUDAUT   Florimel-FLOTTE   Salomé-REBOURS
 
 alter table EST_ATTACHE
    drop constraint FK_EST_ATTA_EST_ATTAC_EXPERIEN;
