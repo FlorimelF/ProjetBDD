@@ -47,12 +47,12 @@ begin
   commit;
   insert into RESULTAT values (1,1,'10-OCT-20');
   insert into REACTIF values (1,55,'reactif');
-  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'colorimetrique');
+  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'Colorimétrique');
   insert into EXPERIENCE values (
     1,1,2,1,5,1,'10-SEPT-20','10-OCT-20',null,2,'09-SEPT-20',2,
     2, -- Insertion priorité valide (prio = 2)
     'technicien','chercheur',3,6,2,null,
-    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='colorimetrique'),
+    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
   );
   rollback;
@@ -80,12 +80,12 @@ begin
   commit; -- Définition du point de démarrage de début de test
   insert into RESULTAT values (1,1,'10-OCT-20');
   insert into REACTIF values (1,55,'reactif');
-  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'colorimetrique');
+  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'Colorimétrique');
   insert into EXPERIENCE values (
     1,1,2,1,5,1,'10-SEPT-20','10-OCT-20',null,2,'09-SEPT-20',2,
     4, -- Insertion priorité invalide (prio > 3)
     'technicien','chercheur',3,6,2,null,
-    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='colorimetrique'),
+    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
   ); 
   rollback; -- Suppression de toutes les données de contexte du test
@@ -113,12 +113,12 @@ begin
   commit;
   insert into RESULTAT values (1,1,'10-OCT-20');
   insert into REACTIF values (1,55,'reactif');
-  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'colorimetrique');
+  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'Colorimétrique');
   insert into EXPERIENCE values (
     1,1,2,1,5,1,'10-SEPT-20','10-OCT-20',null,2,'09-SEPT-20',2,
     0, -- Insertion priorité invalide (prio < 1)
     'technicien','chercheur',3,6,2,null,
-    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='colorimetrique'),
+    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
   ); 
   rollback;
@@ -146,12 +146,12 @@ begin
   commit;
   insert into RESULTAT values (1,1,'10-OCT-20');
   insert into REACTIF values (1,55,'reactif');
-  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'colorimetrique');
+  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'Colorimétrique');
   insert into EXPERIENCE values (
     1,1,2,1,5,1,'10-SEPT-20','10-OCT-20',null,2,'09-SEPT-20',2,
     2.5, -- Insertion priorité invalide (prio = 2.5)
     'technicien','chercheur',3,6,2,null,
-    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='colorimetrique'),
+    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
   );
   rollback;
@@ -182,12 +182,12 @@ begin
   commit;
   insert into RESULTAT values (1,1,'10-OCT-20');
   insert into REACTIF values (1,55,'reactif');
-  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'colorimetrique');
+  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'Colorimétrique');
   insert into EXPERIENCE values (
     1,1,2,
     0.5, -- Insertion a3 valide (a3 = 0.5)
     5,1,'10-SEPT-20','10-OCT-20',null,2,'09-SEPT-20',2,3,'technicien','chercheur',3,6,2,null,
-    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='colorimetrique'),
+    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
   );
   rollback;
@@ -215,12 +215,12 @@ begin
   commit;
   insert into RESULTAT values (1,1,'10-OCT-20');
   insert into REACTIF values (1,55,'reactif');
-  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'colorimetrique');
+  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'Colorimétrique');
   insert into EXPERIENCE values (
     1,1,2,
     -1, -- Insertion a3 invalide (a3 = -1 < 0)
     5,1,'10-SEPT-20','10-OCT-20',null,2,'09-SEPT-20',2,3,'technicien','chercheur',3,6,2,null,
-    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='colorimetrique'),
+    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
   );
   rollback;
@@ -248,12 +248,12 @@ begin
   commit;
   insert into RESULTAT values (1,1,'10-OCT-20');
   insert into REACTIF values (1,55,'reactif');
-  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'colorimetrique');
+  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'Colorimétrique');
   insert into EXPERIENCE values (
     1,1,2,
     2, -- Insertion a3 invalide (a3 = 2 > 1)
     5,1,'10-SEPT-20','10-OCT-20',null,2,'09-SEPT-20',2,3,'technicien','chercheur',3,6,2,null,
-    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='colorimetrique'),
+    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
   );
   rollback;
@@ -284,12 +284,12 @@ begin
   commit;
   insert into RESULTAT values (1,1,'10-OCT-20');
   insert into REACTIF values (1,55,'reactif');
-  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'colorimetrique');
+  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'Colorimétrique');
   insert into EXPERIENCE values (
     1,1,2,0.5,5,1,'10-SEPT-20','10-OCT-20',null,2,'09-SEPT-20',2,3,'technicien','chercheur',
     255, -- Insertion NbSlotPourGroupe valide = 255
     6,2,null,
-    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='colorimetrique'),
+    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
   );
   rollback;
@@ -317,12 +317,12 @@ begin
   commit;
   insert into RESULTAT values (1,1,'10-OCT-20');
   insert into REACTIF values (1,55,'reactif');
-  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'colorimetrique');
+  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'Colorimétrique');
   insert into EXPERIENCE values (
     1,1,2,0.5,5,1,'10-SEPT-20','10-OCT-20',null,2,'09-SEPT-20',2,3,'technicien','chercheur',
     -1, -- Insertion NbSlotPourGroupe invalide = -1 < 1
     6,2,null,
-    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='colorimetrique'),
+    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
   );
   rollback;
@@ -350,12 +350,12 @@ begin
   commit;
   insert into RESULTAT values (1,1,'10-OCT-20');
   insert into REACTIF values (1,55,'reactif');
-  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'colorimetrique');
+  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'Colorimétrique');
   insert into EXPERIENCE values (
     1,1,2,0.5,5,1,'10-SEPT-20','10-OCT-20',null,2,'09-SEPT-20',2,3,'technicien','chercheur',
     385, -- Insertion NbSlotPourGroupe invalide = 385 > 384
     6,2,null,
-    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='colorimetrique'),
+    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
   );
   rollback;
@@ -386,12 +386,12 @@ begin
   commit;
   insert into RESULTAT values (1,1,'10-OCT-20');
   insert into REACTIF values (1,55,'reactif');
-  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'colorimetrique');
+  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'Colorimétrique');
   insert into EXPERIENCE values (
     1,
     0, -- Insertion a1 valide = 0
     2,0.5,5,1,'10-SEPT-20','10-OCT-20',null,2,'09-SEPT-20',2,3,'technicien','chercheur',255,6,2,null,
-    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='colorimetrique'),
+    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
   );
   rollback;
@@ -419,12 +419,12 @@ begin
   commit;
   insert into RESULTAT values (1,1,'10-OCT-20');
   insert into REACTIF values (1,55,'reactif');
-  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'colorimetrique');
+  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'Colorimétrique');
   insert into EXPERIENCE values (
     1,
     -1, -- Insertion a1 invalide = -1
     2,0.5,5,1,'10-SEPT-20','10-OCT-20',null,2,'09-SEPT-20',2,3,'technicien','chercheur',255,6,2,null,
-    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='colorimetrique'),
+    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
   );
   rollback;
@@ -455,12 +455,12 @@ begin
   commit;
   insert into RESULTAT values (1,1,'10-OCT-20');
   insert into REACTIF values (1,55,'reactif');
-  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'colorimetrique');
+  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'Colorimétrique');
   insert into EXPERIENCE values (
     1,0,2,0.5,5,1,'10-SEPT-20','10-OCT-20',
     1, -- Insertion fObservation valide = 1
     2,'09-SEPT-20',2,3,'technicien','chercheur',255,6,2,null,
-    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='colorimetrique'),
+    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
   );
   rollback;
@@ -488,12 +488,12 @@ begin
   commit;
   insert into RESULTAT values (1,1,'10-OCT-20');
   insert into REACTIF values (1,55,'reactif');
-  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'colorimetrique');
+  insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'Colorimétrique');
   insert into EXPERIENCE values (
     1,0,2,0.5,5,1,'10-SEPT-20','10-OCT-20',
     0, -- Insertion fObservation invalide = 0
     2,'09-SEPT-20',2,3,'technicien','chercheur',255,6,2,null,
-    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='colorimetrique'),
+    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
   );
   rollback;
@@ -528,12 +528,12 @@ begin
   commit;
   insert into RESULTAT values (1,1,'10-OCT-20');
   insert into REACTIF values (1,55,'reactif');
-  insert into TYPERELEVE values (1,1,'colorimetrique');
+  insert into TYPERELEVE values (1,1,'Colorimétrique');
   insert into EXPERIENCE values (
     1,1,2,1,5,1,
     '10-SEPT-20','10-OCT-20', -- Insertion DébutExp < FinExp
     null,2,'09-SEPT-20',2,3,'technicien','chercheur',3,6,2,null,
-    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='colorimetrique'),
+    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
   );
   rollback;
@@ -561,12 +561,12 @@ begin
   commit;
   insert into RESULTAT values (1,1,'10-OCT-20');
   insert into REACTIF values (1,55,'reactif');
-  insert into TYPERELEVE values (1,1,'colorimetrique');
+  insert into TYPERELEVE values (1,1,'Colorimétrique');
   insert into EXPERIENCE values (
     1,1,2,1,5,1,
     '10-OCT-20','10-SEPT-20', -- Insertion DébutExp < FinExp
     null,2,'09-SEPT-20',2,3,'technicien','chercheur',3,6,2,null,
-    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='colorimetrique'),
+    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
   );
   rollback;
@@ -597,14 +597,14 @@ begin
   commit;
   insert into RESULTAT values (1,1,'10-OCT-20');
   insert into REACTIF values (1,55,'reactif');
-  insert into TYPERELEVE values (1,1,'colorimetrique');
+  insert into TYPERELEVE values (1,1,'Colorimétrique');
   insert into EXPERIENCE values (
     1,1,2,1,5,1,
     '10-SEPT-20', -- Insertion DébutExp
     '10-OCT-20',2,4,
     '09-SEPT-20', -- Insertion DateChercheur
     2,3,'technicien','chercheur',3,6,2,null,
-    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='colorimetrique'),
+    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
   );
   rollback;
@@ -632,14 +632,14 @@ begin
   commit;
   insert into RESULTAT values (1,1,'10-OCT-20');
   insert into REACTIF values (1,55,'reactif');
-  insert into TYPERELEVE values (1,1,'colorimetrique');
+  insert into TYPERELEVE values (1,1,'Colorimétrique');
   insert into EXPERIENCE values (
     1,1,2,1,5,1,
     '10-SEPT-20', -- Insertion DébutExp
     '10-OCT-20',2,4,
     '12-SEPT-20', -- Insertion DateChercheur
     2,3,'technicien','chercheur',3,6,2,null,
-    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='colorimetrique'),
+    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
   );
   rollback;
@@ -670,12 +670,12 @@ begin
   commit;
   insert into RESULTAT values (1,1,'10-OCT-20');
   insert into REACTIF values (1,55,'reactif');
-  insert into TYPERELEVE values (1,1,'colorimetrique');
+  insert into TYPERELEVE values (1,1,'Colorimétrique');
   insert into EXPERIENCE values (
     1,
     1,2, -- Insertion valide a1 < a2
     1,5,1,'10-SEPT-20','10-OCT-20',null,2,'09-SEPT-20',2,3,'technicien','chercheur',3,6,2,null,
-    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='colorimetrique'),
+    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
   );
   rollback;
@@ -703,12 +703,12 @@ begin
   commit;
   insert into RESULTAT values (1,1,'10-OCT-20');
   insert into REACTIF values (1,55,'reactif');
-  insert into TYPERELEVE values (1,1,'colorimetrique');
+  insert into TYPERELEVE values (1,1,'Colorimétrique');
   insert into EXPERIENCE values (
     1,
     3,2, -- Insertion invalide a1 > a2
     1,5,1,'10-SEPT-20','10-OCT-20',null,2,'09-SEPT-20',2,3,'technicien','chercheur',3,6,2,null,
-    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='colorimetrique'),
+    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
   );
   rollback;
@@ -734,7 +734,7 @@ commit;
 
 -------------------------------------------------------------------------------------- Test positif
 
-create or replace procedure TestP_PlacementGroupe as
+create or replace procedure TestP_IntégrationReactif as
   CHECK_CONSTRAINT_VIOLATED EXCEPTION;
   pragma exception_init(check_constraint_violated, -20004) ;  
 begin
@@ -742,24 +742,24 @@ begin
   insert into REACTIF values (1,10,'Reactif1');
   insert into REACTIF values (2,15,'Reactif2');
   rollback;
-  insert into TraceTest values ('TestP_PlacementGroupe',1);
+  insert into TraceTest values ('TestP_IntégrationReactif',1);
   commit;
   exception
     when check_constraint_violated then
       rollback;
-      insert into TraceTest values ('TestP_PlacementGroupe',0);
+      insert into TraceTest values ('TestP_IntégrationReactif',0);
       commit; 
 end;
 /
 begin
-  TestP_PlacementGroupe;
+  TestP_IntégrationReactif;
 end;
 /
 commit;
 
 -------------------------------------------------------------------------------------- Test négatif
 
-create or replace procedure TestN_PlacementGroupe as
+create or replace procedure TestN_IntégrationReactif as
   CHECK_CONSTRAINT_VIOLATED EXCEPTION;
   pragma exception_init(check_constraint_violated, -20004) ;
 begin
@@ -767,17 +767,17 @@ begin
   insert into REACTIF values (1,10,'Reactif1');
   insert into REACTIF values (2,15,'Reactif1');
   rollback;
-  insert into TraceTest values ('TestN_PlacementGroupe',0);
+  insert into TraceTest values ('TestN_IntégrationReactif',0);
   commit;
   exception
     when check_constraint_violated then
       rollback;
-      insert into TraceTest values ('TestN_PlacementGroupe',1);
+      insert into TraceTest values ('TestN_IntégrationReactif',1);
       commit; 
 end;
 /
 begin
-  TestN_PlacementGroupe;
+  TestN_IntégrationReactif;
 end;
 /
 commit;
@@ -785,7 +785,7 @@ commit;
 ------------------------------------------------------------------------------------------------- VerificationNomRelevé
 -- Nom_Relevé doit contenir "Colorimétrique" ou "Opacimétrique" exclusivement
 
---------------------------------------------------------------------- Test positif "colorimetrique"
+--------------------------------------------------------------------- Test positif "Colorimétrique"
 
 create or replace procedure TestP_VerificationNomReleve1 as
   check_constraint_violated exception;
@@ -793,7 +793,7 @@ create or replace procedure TestP_VerificationNomReleve1 as
 begin
   commit;
   insert into REACTIF values (1,25,'ReactifNumero1');
-  insert into TYPERELEVE values (1,1,'colorimetrique'); -- Nom_Relevé valide
+  insert into TYPERELEVE values (1,1,'Colorimétrique'); -- Nom_Relevé valide
   rollback;
   insert into TraceTest values ('TestP_VerificationNomReleve1',1);
   commit;
@@ -818,7 +818,7 @@ create or replace procedure TestP_VerificationNomReleve2 as
 begin
   commit;
   insert into REACTIF values (1,25,'ReactifNumero1');
-  insert into TYPERELEVE values (1,1,'opacimetrique'); -- Nom_Relevé valide
+  insert into TYPERELEVE values (1,1,'Opacimétrique'); -- Nom_Relevé valide
   rollback;
   insert into TraceTest values ('TestP_VerificationNomReleve2',1);
   commit;
@@ -872,12 +872,12 @@ begin
   commit;
   insert into RESULTAT values (1,1,'10-OCT-20');
   insert into REACTIF values (1,55,'ReactifNumero1');
-  insert into TYPERELEVE values (1,1,'colorimetrique');
+  insert into TYPERELEVE values (1,1,'Colorimétrique');
   insert into EXPERIENCE values (
     1,1,2,1,5,1,'10-SEPT-20','10-OCT-20',
     2,4, -- Insertion Durée et fObservation valides (4/2=2)
     '09-SEPT-20',2,3,'technicien','chercheur',3,6,2,null,
-    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='colorimetrique'),
+    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
   );
   rollback;
@@ -905,12 +905,12 @@ begin
   commit;
   insert into RESULTAT values (1,1,'10-OCT-20');
   insert into REACTIF values (1,55,'ReactifNumero1');
-  insert into TYPERELEVE values (1,1,'colorimetrique');
+  insert into TYPERELEVE values (1,1,'Colorimétrique');
   insert into EXPERIENCE values (
     1,1,2,1,5,1,'10-SEPT-20','10-OCT-20',
     2,3, -- Insertion Durée et fObservation valides (3/2=1,5)
     '09-SEPT-20',2,3,'technicien','chercheur',3,6,2,null,
-    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='colorimetrique'),
+    (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
   );
   rollback;
