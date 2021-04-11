@@ -49,7 +49,7 @@ begin
   insert into REACTIF values (1,55,'reactif');
   insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'Colorimétrique');
   insert into EXPERIENCE values (
-    1,1,2,1,5,1,'10-SEPT-20','10-OCT-20',null,2,'09-SEPT-20',2,
+    1,1,2,1,5,1,'10-SEP-20','10-OCT-20',null,2,'09-SEP-20',2,
     2, -- Insertion priorité valide (prio = 2)
     'technicien','chercheur',3,6,2,null,
     (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
@@ -82,7 +82,7 @@ begin
   insert into REACTIF values (1,55,'reactif');
   insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'Colorimétrique');
   insert into EXPERIENCE values (
-    1,1,2,1,5,1,'10-SEPT-20','10-OCT-20',null,2,'09-SEPT-20',2,
+    1,1,2,1,5,1,'10-SEP-20','10-OCT-20',null,2,'09-SEP-20',2,
     4, -- Insertion priorité invalide (prio > 3)
     'technicien','chercheur',3,6,2,null,
     (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
@@ -115,7 +115,7 @@ begin
   insert into REACTIF values (1,55,'reactif');
   insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'Colorimétrique');
   insert into EXPERIENCE values (
-    1,1,2,1,5,1,'10-SEPT-20','10-OCT-20',null,2,'09-SEPT-20',2,
+    1,1,2,1,5,1,'10-SEP-20','10-OCT-20',null,2,'09-SEP-20',2,
     0, -- Insertion priorité invalide (prio < 1)
     'technicien','chercheur',3,6,2,null,
     (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
@@ -148,7 +148,7 @@ begin
   insert into REACTIF values (1,55,'reactif');
   insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'Colorimétrique');
   insert into EXPERIENCE values (
-    1,1,2,1,5,1,'10-SEPT-20','10-OCT-20',null,2,'09-SEPT-20',2,
+    1,1,2,1,5,1,'10-SEP-20','10-OCT-20',null,2,'09-SEP-20',2,
     2.5, -- Insertion priorité invalide (prio = 2.5)
     'technicien','chercheur',3,6,2,null,
     (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
@@ -186,7 +186,7 @@ begin
   insert into EXPERIENCE values (
     1,1,2,
     0.5, -- Insertion a3 valide (a3 = 0.5)
-    5,1,'10-SEPT-20','10-OCT-20',null,2,'09-SEPT-20',2,3,'technicien','chercheur',3,6,2,null,
+    5,1,'10-SEP-20','10-OCT-20',null,2,'09-SEP-20',2,3,'technicien','chercheur',3,6,2,null,
     (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
   );
@@ -219,7 +219,7 @@ begin
   insert into EXPERIENCE values (
     1,1,2,
     -1, -- Insertion a3 invalide (a3 = -1 < 0)
-    5,1,'10-SEPT-20','10-OCT-20',null,2,'09-SEPT-20',2,3,'technicien','chercheur',3,6,2,null,
+    5,1,'10-SEP-20','10-OCT-20',null,2,'09-SEP-20',2,3,'technicien','chercheur',3,6,2,null,
     (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
   );
@@ -252,7 +252,7 @@ begin
   insert into EXPERIENCE values (
     1,1,2,
     2, -- Insertion a3 invalide (a3 = 2 > 1)
-    5,1,'10-SEPT-20','10-OCT-20',null,2,'09-SEPT-20',2,3,'technicien','chercheur',3,6,2,null,
+    5,1,'10-SEP-20','10-OCT-20',null,2,'09-SEP-20',2,3,'technicien','chercheur',3,6,2,null,
     (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
   );
@@ -286,7 +286,7 @@ begin
   insert into REACTIF values (1,55,'reactif');
   insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'Colorimétrique');
   insert into EXPERIENCE values (
-    1,1,2,0.5,5,1,'10-SEPT-20','10-OCT-20',null,2,'09-SEPT-20',2,3,'technicien','chercheur',
+    1,1,2,0.5,5,1,'10-SEP-20','10-OCT-20',null,2,'09-SEP-20',2,3,'technicien','chercheur',
     255, -- Insertion NbSlotPourGroupe valide = 255
     6,2,null,
     (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
@@ -319,7 +319,7 @@ begin
   insert into REACTIF values (1,55,'reactif');
   insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'Colorimétrique');
   insert into EXPERIENCE values (
-    1,1,2,0.5,5,1,'10-SEPT-20','10-OCT-20',null,2,'09-SEPT-20',2,3,'technicien','chercheur',
+    1,1,2,0.5,5,1,'10-SEP-20','10-OCT-20',null,2,'09-SEP-20',2,3,'technicien','chercheur',
     -1, -- Insertion NbSlotPourGroupe invalide = -1 < 1
     6,2,null,
     (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
@@ -352,7 +352,7 @@ begin
   insert into REACTIF values (1,55,'reactif');
   insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'Colorimétrique');
   insert into EXPERIENCE values (
-    1,1,2,0.5,5,1,'10-SEPT-20','10-OCT-20',null,2,'09-SEPT-20',2,3,'technicien','chercheur',
+    1,1,2,0.5,5,1,'10-SEP-20','10-OCT-20',null,2,'09-SEP-20',2,3,'technicien','chercheur',
     385, -- Insertion NbSlotPourGroupe invalide = 385 > 384
     6,2,null,
     (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
@@ -390,7 +390,7 @@ begin
   insert into EXPERIENCE values (
     1,
     0, -- Insertion a1 valide = 0
-    2,0.5,5,1,'10-SEPT-20','10-OCT-20',null,2,'09-SEPT-20',2,3,'technicien','chercheur',255,6,2,null,
+    2,0.5,5,1,'10-SEP-20','10-OCT-20',null,2,'09-SEP-20',2,3,'technicien','chercheur',255,6,2,null,
     (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
   );
@@ -423,7 +423,7 @@ begin
   insert into EXPERIENCE values (
     1,
     -1, -- Insertion a1 invalide = -1
-    2,0.5,5,1,'10-SEPT-20','10-OCT-20',null,2,'09-SEPT-20',2,3,'technicien','chercheur',255,6,2,null,
+    2,0.5,5,1,'10-SEP-20','10-OCT-20',null,2,'09-SEP-20',2,3,'technicien','chercheur',255,6,2,null,
     (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
   );
@@ -457,9 +457,9 @@ begin
   insert into REACTIF values (1,55,'reactif');
   insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'Colorimétrique');
   insert into EXPERIENCE values (
-    1,0,2,0.5,5,1,'10-SEPT-20','10-OCT-20',
+    1,0,2,0.5,5,1,'10-SEP-20','10-OCT-20',
     1, -- Insertion fObservation valide = 1
-    2,'09-SEPT-20',2,3,'technicien','chercheur',255,6,2,null,
+    2,'09-SEP-20',2,3,'technicien','chercheur',255,6,2,null,
     (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
   );
@@ -490,9 +490,9 @@ begin
   insert into REACTIF values (1,55,'reactif');
   insert into TYPERELEVE values (1,(select IDREACTIF from REACTIF where NOMREACTIF ='reactif'),'Colorimétrique');
   insert into EXPERIENCE values (
-    1,0,2,0.5,5,1,'10-SEPT-20','10-OCT-20',
+    1,0,2,0.5,5,1,'10-SEP-20','10-OCT-20',
     0, -- Insertion fObservation invalide = 0
-    2,'09-SEPT-20',2,3,'technicien','chercheur',255,6,2,null,
+    2,'09-SEP-20',2,3,'technicien','chercheur',255,6,2,null,
     (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
   );
@@ -531,8 +531,8 @@ begin
   insert into TYPERELEVE values (1,1,'Colorimétrique');
   insert into EXPERIENCE values (
     1,1,2,1,5,1,
-    '10-SEPT-20','10-OCT-20', -- Insertion DébutExp < FinExp
-    null,2,'09-SEPT-20',2,3,'technicien','chercheur',3,6,2,null,
+    '10-SEP-20','10-OCT-20', -- Insertion DébutExp < FinExp
+    null,2,'09-SEP-20',2,3,'technicien','chercheur',3,6,2,null,
     (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
   );
@@ -564,8 +564,8 @@ begin
   insert into TYPERELEVE values (1,1,'Colorimétrique');
   insert into EXPERIENCE values (
     1,1,2,1,5,1,
-    '10-OCT-20','10-SEPT-20', -- Insertion DébutExp < FinExp
-    null,2,'09-SEPT-20',2,3,'technicien','chercheur',3,6,2,null,
+    '10-OCT-20','10-SEP-20', -- Insertion DébutExp < FinExp
+    null,2,'09-SEP-20',2,3,'technicien','chercheur',3,6,2,null,
     (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
   );
@@ -600,9 +600,9 @@ begin
   insert into TYPERELEVE values (1,1,'Colorimétrique');
   insert into EXPERIENCE values (
     1,1,2,1,5,1,
-    '10-SEPT-20', -- Insertion DébutExp
+    '10-SEP-20', -- Insertion DébutExp
     '10-OCT-20',2,4,
-    '09-SEPT-20', -- Insertion DateChercheur
+    '09-SEP-20', -- Insertion DateChercheur
     2,3,'technicien','chercheur',3,6,2,null,
     (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
@@ -635,9 +635,9 @@ begin
   insert into TYPERELEVE values (1,1,'Colorimétrique');
   insert into EXPERIENCE values (
     1,1,2,1,5,1,
-    '10-SEPT-20', -- Insertion DébutExp
+    '10-SEP-20', -- Insertion DébutExp
     '10-OCT-20',2,4,
-    '12-SEPT-20', -- Insertion DateChercheur
+    '12-SEP-20', -- Insertion DateChercheur
     2,3,'technicien','chercheur',3,6,2,null,
     (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
@@ -674,7 +674,7 @@ begin
   insert into EXPERIENCE values (
     1,
     1,2, -- Insertion valide a1 < a2
-    1,5,1,'10-SEPT-20','10-OCT-20',null,2,'09-SEPT-20',2,3,'technicien','chercheur',3,6,2,null,
+    1,5,1,'10-SEP-20','10-OCT-20',null,2,'09-SEP-20',2,3,'technicien','chercheur',3,6,2,null,
     (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
   );
@@ -707,7 +707,7 @@ begin
   insert into EXPERIENCE values (
     1,
     3,2, -- Insertion invalide a1 > a2
-    1,5,1,'10-SEPT-20','10-OCT-20',null,2,'09-SEPT-20',2,3,'technicien','chercheur',3,6,2,null,
+    1,5,1,'10-SEP-20','10-OCT-20',null,2,'09-SEP-20',2,3,'technicien','chercheur',3,6,2,null,
     (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
   );
@@ -874,9 +874,9 @@ begin
   insert into REACTIF values (1,55,'ReactifNumero1');
   insert into TYPERELEVE values (1,1,'Colorimétrique');
   insert into EXPERIENCE values (
-    1,1,2,1,5,1,'10-SEPT-20','10-OCT-20',
+    1,1,2,1,5,1,'10-SEP-20','10-OCT-20',
     2,4, -- Insertion Durée et fObservation valides (4/2=2)
-    '09-SEPT-20',2,3,'technicien','chercheur',3,6,2,null,
+    '09-SEP-20',2,3,'technicien','chercheur',3,6,2,null,
     (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
   );
@@ -907,9 +907,9 @@ begin
   insert into REACTIF values (1,55,'ReactifNumero1');
   insert into TYPERELEVE values (1,1,'Colorimétrique');
   insert into EXPERIENCE values (
-    1,1,2,1,5,1,'10-SEPT-20','10-OCT-20',
+    1,1,2,1,5,1,'10-SEP-20','10-OCT-20',
     2,3, -- Insertion Durée et fObservation valides (3/2=1,5)
-    '09-SEPT-20',2,3,'technicien','chercheur',3,6,2,null,
+    '09-SEP-20',2,3,'technicien','chercheur',3,6,2,null,
     (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='Colorimétrique'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
   );
