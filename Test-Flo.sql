@@ -125,7 +125,7 @@ commit;
     'chercheur',
     3,
     6,
-    0, -- coef
+    1, -- coef
     null,
     (select IDRELEVE from TYPERELEVE where NOM_RELEVE ='releve'),
     (select IDRESULTAT from RESULTAT where DATETRANSMISSION ='10-OCT-20')
